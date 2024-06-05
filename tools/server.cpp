@@ -1,4 +1,4 @@
-#include "../includes/client.h"
+#include "../includes/server.h"
 
 /*
 ----------------
@@ -6,23 +6,25 @@
 ----------------
 */
 
-bool Client::startClient(int argc, char* argv[]){
-    string msg_type_clt = "[ CLIENT ]\t";
+bool Server::startServer(int argc, char* argv[]){
+    string msg_type_clt = "[ SERVER ]\t";
     string msg_type_arg = "[ PARAMS ]\t";
     string msg_type_sok = "[ SOCKET ]\t";
     string msg_type_con = "[ CONNECT ]\t";
+    string msg_type_lis = "[ LISTEN ]\t";
+    string msg_type_acp = "[ ACCEPT ]\t";
 
-    string start_client = "Starting ...\n";
-    cerr << BOLDGREEN << msg_type_clt << RESET << start_client;
-    logger.log(msg_type_clt + start_client, Logger::INFO);
+    string start_server = "Starting ...\n";
+    cerr << BOLDGREEN << msg_type_clt << RESET << start_server;
+    logger.log(msg_type_clt + start_server, Logger::INFO);
 
     if (parseArgs(argc, argv)){
-        string msg_done = "Client received arguments\n";
+        string msg_done = "Server received arguments\n";
         cerr << BOLDGREEN << msg_type_arg << RESET << msg_done;
         logger.log(msg_type_arg + msg_done, Logger::INFO);
     }
     else{
-        string msg_error = "Client received no arguments\n\n";
+        string msg_error = "Server received no arguments\n\n";
         cerr << BOLDRED << msg_type_arg << RESET << msg_error;
         logger.log(msg_type_arg + msg_error, Logger::ERROR);
         return false;
@@ -51,36 +53,44 @@ bool Client::startClient(int argc, char* argv[]){
         logger.log(msg_type_con + msg_error, Logger::INFO);
         return false;
     }
+
+    if (serverListen()){
+        string msg_done = "Server started listening\n";
+        cerr << BOLDGREEN << msg_type_lis << RESET << msg_done;
+        logger.log(msg_type_lis + msg_done, Logger::INFO);
+    }
+    else{
+        string msg_error = "Server did not start listening\n\n";
+        cerr << BOLDRED << msg_type_lis << RESET << msg_error;
+        logger.log(msg_type_lis + msg_error, Logger::INFO);
+        return false;
+    }
     return true;
 }
 
-bool Client::parseArgs(int argc, char* argv[]){
-    string temp = argv[2];
+bool Server::parseArgs(int argc, char* argv[]){
+    string temp = argv[1];
 
-    server_ip = argv[1];
+    server_ip = "";
     auto [ptr, ec] = std::from_chars(temp.data(), temp.data() + temp.size(), server_port);
     return ec == std::errc();
 }
 
-bool Client::createSocket(){
-    clientFD = getSocket();
-    return clientFD;
+bool Server::createSocket(){
+    serverFD = getSocket();
+    return serverFD;
 }
 
-bool Client::connectServer(){
-    int connect = createAddr(clientFD, server_ip, server_port, address);
+bool Server::connectServer(){
+    int connect = createAddr(serverFD, server_ip, server_port, address);
     if (connect == 0)
         return true;
     return false;
 }
 
-/*
-----------------
----- Part 2 ----
-----------------
-*/
-
-// bool send_pkg(string &message){
-
-
-// }
+bool Server::serverListen(){
+    int result = listen(serverFD, 10);
+    if (result == 0)
+        return true;
+    return false;
+}

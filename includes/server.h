@@ -1,11 +1,12 @@
-#ifndef CLIENT_H
-#define CLIENT_H
+#ifndef SERVER_H
+#define SERVER_H
 
 #include "../includes/utils.h"
 
 
-class Client{
+class Server{
 private:
+    int serverFD;
     int clientFD;
     Logger logger;
     struct sockaddr_in address;
@@ -16,15 +17,17 @@ private:
     bool parseArgs(int argc, char *argv[]);
     bool createSocket();
     bool connectServer();
+    bool serverListen();
+    bool serverAccept();
 
 public:
 
-    Client(const string &logFilePath): logger(logFilePath){}
-    ~Client(){}
+    Server(const string &logFilePath): logger(logFilePath){}
+    ~Server(){}
 
-    bool startClient(int argc, char *argv[]);
+    bool startServer(int argc, char *argv[]);
     // bool send_pkg(string &message);
 
 };
 
-#endif // CLIENT_H
+#endif // SERVER_H

@@ -1,0 +1,41 @@
+2024-06-05 14:39:16 [ INFO ] 	[ SERVER ]	Starting ...
+2024-06-05 14:39:16 [ INFO ] 	[ PARAMS ]	Server received arguments
+2024-06-05 14:39:16 [ INFO ] 	[ SOCKET ]	Socket was created
+2024-06-05 14:39:16 [ INFO ] 	[ CONNECT ]	Connect was not created
+
+2024-06-05 14:39:27 [ INFO ] 	[ SERVER ]	Starting ...
+2024-06-05 14:39:27 [ INFO ] 	[ PARAMS ]	Server received arguments
+2024-06-05 14:39:27 [ INFO ] 	[ SOCKET ]	Socket was created
+2024-06-05 14:39:27 [ INFO ] 	[ CONNECT ]	Connect was not created
+
+2024-06-05 14:54:40 [ INFO ] 	[ SERVER ]	Starting ...
+2024-06-05 14:54:40 [ INFO ] 	[ PARAMS ]	Server received arguments
+2024-06-05 14:54:40 [ INFO ] 	[ SOCKET ]	Socket was created
+2024-06-05 14:54:40 [ INFO ] 	[ CONNECT ]	Connect was not created
+
+2024-06-05 15:05:10 [ INFO ] 	[ SERVER ]	Starting ...
+2024-06-05 15:05:10 [ INFO ] 	[ PARAMS ]	Server received arguments
+2024-06-05 15:05:10 [ INFO ] 	[ SOCKET ]	Socket was created
+2024-06-05 15:05:10 [ INFO ] 	[ CONNECT ]	Connect was not created
+
+2024-06-05 15:07:16 [ INFO ] 	[ SERVER ]	Starting ...
+2024-06-05 15:07:16 [ INFO ] 	[ PARAMS ]	Server received arguments
+2024-06-05 15:07:16 [ INFO ] 	[ SOCKET ]	Socket was created
+2024-06-05 15:07:16 [ INFO ] 	[ CONNECT ]	Connect was not created
+
+2024-06-05 15:07:19 [ INFO ] 	[ SERVER ]	Starting ...
+2024-06-05 15:07:19 [ INFO ] 	[ PARAMS ]	Server received arguments
+2024-06-05 15:07:19 [ INFO ] 	[ SOCKET ]	Socket was created
+2024-06-05 15:07:19 [ INFO ] 	[ CONNECT ]	Connect was not created
+
+2024-06-05 15:12:04 [ INFO ] 	[ SERVER ]	Starting ...
+2024-06-05 15:12:04 [ INFO ] 	[ PARAMS ]	Server received arguments
+2024-06-05 15:12:04 [ INFO ] 	[ SOCKET ]	Socket was created
+2024-06-05 15:12:04 [ INFO ] 	[ CONNECT ]	Connection was successfully
+2024-06-05 15:12:04 [ INFO ] 	[ LISTEN ]	Server started listening
+
+2024-06-05 17:05:07 [ INFO ] 	[ SERVER ]	Starting ...
+2024-06-05 17:05:07 [ INFO ] 	[ PARAMS ]	Server received arguments
+2024-06-05 17:05:07 [ INFO ] 	[ SOCKET ]	Socket was created
+2024-06-05 17:05:07 [ INFO ] 	[ CONNECT ]	Connection was successfully
+2024-06-05 17:05:07 [ INFO ] 	[ LISTEN ]	Server started listening

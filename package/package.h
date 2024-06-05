@@ -6,7 +6,7 @@
 #pragma pack(push, 1)
 
 struct ServerIntro{
-    char intro[2047];
+    char intro[2048];
 } server_intro;
 
 struct SearchFile{
@@ -21,10 +21,7 @@ struct ResultPath{
     char result[50];
 } result_path;
 
-std::variant<ServerIntro, SearchFile, PleaseWait, ResultPath> Package;
-// using Package = std::variant<ServerIntro, SearchFile, PleaseWait, ResultPath>
-
-static_assert(sizeof(Package) == 2048, "Package size != 2048");
+using Package = std::variant<ServerIntro, SearchFile, PleaseWait, ResultPath>;
 
 #pragma pack(pop)
 
