@@ -1,9 +1,9 @@
 #include "../includes/client.h"
 
-/*
-----------------
----- Part 1 ----
-----------------
+/*                         ▄   ▄
+----------------       ▄█▄ █▀█▀█ ▄█▄
+---- Part 1 ----      ▀▀████▄█▄████▀▀
+----------------           ▀█▀█▀
 */
 
 bool Client::startClient(int argc, char* argv[]){
@@ -13,42 +13,35 @@ bool Client::startClient(int argc, char* argv[]){
     string msg_type_con = "[ CONNECT ]\t";
 
     string start_client = "Starting ...\n";
-    cerr << BOLDGREEN << msg_type_clt << RESET << start_client;
-    logger.log(msg_type_clt + start_client, Logger::INFO);
+    printAndLogs(msg_type_clt, start_client, true);
 
     if (parseArgs(argc, argv)){
-        string msg_done = "Client received arguments\n";
-        cerr << BOLDGREEN << msg_type_arg << RESET << msg_done;
-        logger.log(msg_type_arg + msg_done, Logger::INFO);
+        string message = "Client received arguments\n";
+        printAndLogs(msg_type_arg, message, true);
     }
     else{
-        string msg_error = "Client received no arguments\n\n";
-        cerr << BOLDRED << msg_type_arg << RESET << msg_error;
-        logger.log(msg_type_arg + msg_error, Logger::ERROR);
+        string message = "Client received no arguments\n\n";
+        printAndLogs(msg_type_arg, message, false);
         return false;
     }
 
     if (createSocket()){
-        string msg_done = "Socket was created\n";
-        cerr << BOLDGREEN << msg_type_sok << RESET << msg_done;
-        logger.log(msg_type_sok + msg_done, Logger::INFO);
+        string message = "Socket was created\n";
+        printAndLogs(msg_type_sok, message, true);
     }
     else{
-        string msg_error = "Socket was not created\n\n";
-        cerr << BOLDRED << msg_type_sok << RESET << msg_error;
-        logger.log(msg_type_sok + msg_error, Logger::ERROR);
+        string message = "Socket was not created\n\n";
+        printAndLogs(msg_type_sok, message, false);
         return false;
     }
 
     if (connectServer()){
-        string msg_done = "Connection was successfully\n";
-        cerr << BOLDGREEN << msg_type_con << RESET << msg_done;
-        logger.log(msg_type_con + msg_done, Logger::INFO);
+        string message = "Connection was successfully\n";
+        printAndLogs(msg_type_con, message, true);
     }
     else{
-        string msg_error = "Connect was not created\n\n";
-        cerr << BOLDRED << msg_type_con << RESET << msg_error;
-        logger.log(msg_type_con + msg_error, Logger::INFO);
+        string message = "Connect was not created\n\n";
+        printAndLogs(msg_type_con, message, false);
         return false;
     }
     return true;
@@ -68,19 +61,38 @@ bool Client::createSocket(){
 }
 
 bool Client::connectServer(){
-    int connect = createAddr(clientFD, server_ip, server_port, address);
-    if (connect == 0)
+    int result = createAddr(clientFD, server_ip, server_port, address);
+    if (result == 0)
         return true;
+    close(clientFD);
     return false;
 }
 
-/*
-----------------
----- Part 2 ----
-----------------
+/*                         ▄█▄▄▄█▄
+----------------    ▄▀    ▄▌─▄─▄─▐▄    ▀▄
+---- Part 2 ----    █▄▄█  ▀▌─▀─▀─▐▀  █▄▄█
+----------------     ▐▌    ▀▀███▀▀    ▐▌
+                    ████ ▄█████████▄ ████
 */
 
-// bool send_pkg(string &message){
 
 
-// }
+
+
+
+/*
+----------------------------
+---- technical function ----
+----------------------------
+*/
+
+void Client::printAndLogs(string &msg_type, string &message, bool status){
+    if (status){
+        cerr << BOLDGREEN << msg_type << RESET << message;
+        logger.log(msg_type + message, Logger::INFO);
+    }
+    else{
+        cerr << BOLDRED << msg_type << RESET << message;
+        logger.log(msg_type + message, Logger::INFO);
+    }
+}

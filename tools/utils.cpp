@@ -2,7 +2,7 @@
 
 
 int getSocket(){
-    return socket(AF_INET, SOCK_STREAM, 0); // SOCK_RAW
+    return socket(AF_INET, SOCK_RAW, IPPROTO_TCP); // SOCK_RAW
 }
 
 int createAddr(int socketFD, const string &ip, int port, sockaddr_in &address){

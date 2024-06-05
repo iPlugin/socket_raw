@@ -39,3 +39,68 @@
 2024-06-05 17:05:07 [ INFO ] 	[ SOCKET ]	Socket was created
 2024-06-05 17:05:07 [ INFO ] 	[ CONNECT ]	Connection was successfully
 2024-06-05 17:05:07 [ INFO ] 	[ LISTEN ]	Server started listening
+2024-06-05 17:19:44 [ INFO ] 	[ SERVER ]	Starting ...
+2024-06-05 17:19:44 [ INFO ] 	[ PARAMS ]	Server received arguments
+2024-06-05 17:19:44 [ INFO ] 	[ SOCKET ]	Socket was created
+2024-06-05 17:19:44 [ INFO ] 	[ BIND ]	Connect was not created
+
+2024-06-05 17:22:09 [ INFO ] 	[ SERVER ]	Starting ...
+2024-06-05 17:22:09 [ INFO ] 	[ PARAMS ]	Server received arguments
+2024-06-05 17:22:09 [ INFO ] 	[ SOCKET ]	Socket was created
+2024-06-05 17:22:09 [ INFO ] 	[ BIND ]	Connect was not created
+
+2024-06-05 17:23:50 [ INFO ] 	[ SERVER ]	Starting ...
+2024-06-05 17:23:50 [ INFO ] 	[ PARAMS ]	Server received arguments
+2024-06-05 17:23:50 [ INFO ] 	[ SOCKET ]	Socket was created
+2024-06-05 17:23:50 [ INFO ] 	[ BIND ]	Connection was successfully
+2024-06-05 17:23:50 [ INFO ] 	[ LISTEN ]	Server did not start listening
+
+2024-06-05 17:26:43 [ INFO ] 	[ SERVER ]	Starting ...
+2024-06-05 17:26:43 [ INFO ] 	[ PARAMS ]	Server received arguments
+2024-06-05 17:26:43 [ INFO ] 	[ SOCKET ]	Socket was created
+2024-06-05 17:26:43 [ INFO ] 	[ BIND ]	Connect was not created
+
+2024-06-05 17:26:52 [ INFO ] 	[ SERVER ]	Starting ...
+2024-06-05 17:26:52 [ INFO ] 	[ PARAMS ]	Server received arguments
+2024-06-05 17:26:52 [ INFO ] 	[ SOCKET ]	Socket was created
+2024-06-05 17:26:52 [ INFO ] 	[ BIND ]	Connect was not created
+
+2024-06-05 17:26:56 [ INFO ] 	[ SERVER ]	Starting ...
+2024-06-05 17:26:56 [ INFO ] 	[ PARAMS ]	Server received arguments
+2024-06-05 17:26:56 [ INFO ] 	[ SOCKET ]	Socket was created
+2024-06-05 17:26:56 [ INFO ] 	[ BIND ]	Connection was successfully
+2024-06-05 17:26:56 [ INFO ] 	[ LISTEN ]	Server did not start listening
+
+2024-06-05 17:28:36 [ INFO ] 	[ SERVER ]	Starting ...
+2024-06-05 17:28:36 [ INFO ] 	[ PARAMS ]	Server received arguments
+2024-06-05 17:28:36 [ INFO ] 	[ SOCKET ]	Socket was created
+2024-06-05 17:28:36 [ INFO ] 	[ BIND ]	Connection was successfully
+2024-06-05 17:28:36 [ INFO ] 	[ LISTEN ]	Server did not start listening
+
+2024-06-05 17:31:35 [ INFO ] 	[ SERVER ]	Starting ...
+2024-06-05 17:31:35 [ INFO ] 	[ PARAMS ]	Server received arguments
+2024-06-05 17:31:35 [ INFO ] 	[ SOCKET ]	Socket was created
+2024-06-05 17:31:35 [ INFO ] 	[ BIND ]	Connection was successfully
+2024-06-05 17:31:35 [ INFO ] 	[ LISTEN ]	Server did not start listening
+
+2024-06-05 17:58:18 [ INFO ] 	[ SERVER ]	Starting ...
+2024-06-05 17:58:18 [ INFO ] 	[ SERVER ]	Starting ...
+2024-06-05 17:58:18 [ INFO ] 	[ PARAMS ]	Server received arguments
+2024-06-05 17:58:18 [ INFO ] 	[ SOCKET ]	Socket was created
+2024-06-05 17:58:18 [ INFO ] 	[ BIND ]	Connection was successfully
+2024-06-05 18:02:46 [ INFO ] 	[ SERVER ]	Starting ...
+2024-06-05 18:02:46 [ INFO ] 	[ PARAMS ]	Server received arguments
+2024-06-05 18:02:46 [ INFO ] 	[ SOCKET ]	Socket was created
+2024-06-05 18:02:46 [ INFO ] 	[ BIND ]	Connection was successfully
+2024-06-05 18:02:55 [ INFO ] 	[ SERVER ]	Starting ...
+2024-06-05 18:02:55 [ INFO ] 	[ PARAMS ]	Server received arguments
+2024-06-05 18:02:55 [ INFO ] 	[ SOCKET ]	Socket was created
+2024-06-05 18:02:55 [ INFO ] 	[ BIND ]	Connection was successfully
+2024-06-05 18:08:00 [ INFO ] 	[ SERVER ]	Starting ...
+2024-06-05 18:08:00 [ INFO ] 	[ PARAMS ]	Server received arguments
+2024-06-05 18:08:00 [ INFO ] 	[ SOCKET ]	Socket was created
+2024-06-05 18:08:00 [ INFO ] 	[ BIND ]	Connection was successfully
+2024-06-05 18:44:41 [ INFO ] 	[ SERVER ]	Starting ...
+2024-06-05 18:44:41 [ INFO ] 	[ PARAMS ]	Server received arguments
+2024-06-05 18:44:41 [ INFO ] 	[ SOCKET ]	Socket was created
+2024-06-05 18:44:41 [ INFO ] 	[ BIND ]	Connection was successfully

@@ -16,9 +16,10 @@ private:
 
     bool parseArgs(int argc, char *argv[]);
     bool createSocket();
-    bool connectServer();
-    bool serverListen();
-    bool serverAccept();
+    bool serverBind();
+    void msg_recv();
+    
+    void printAndLogs(string &msg_type, string &message, bool status);
 
 public:
 
@@ -26,8 +27,10 @@ public:
     ~Server(){}
 
     bool startServer(int argc, char *argv[]);
-    // bool send_pkg(string &message);
 
 };
 
-#endif // SERVER_H
+#endif // SERVER_H           ▐███████▌
+//                           ▐░░░░░░░▌
+//                     ▄▀▀▀█ ▐░▀▀▄▀▀░▌ █▀▀▀▄
+//                     ▌▌▌▌▐ ▄▌░▄▄▄░▐▄ ▌▐▐▐▐

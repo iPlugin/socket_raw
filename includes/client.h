@@ -17,14 +17,18 @@ private:
     bool createSocket();
     bool connectServer();
 
+    void printAndLogs(string &msg_type, string &message, bool status);
+
 public:
 
     Client(const string &logFilePath): logger(logFilePath){}
     ~Client(){}
 
     bool startClient(int argc, char *argv[]);
-    // bool send_pkg(string &message);
 
 };
 
-#endif // CLIENT_H
+#endif // CLIENT_H           ▐███████▌
+//                           ▐░░░░░░░▌
+//                     ▄▀▀▀█ ▐░▀▀▄▀▀░▌ █▀▀▀▄
+//                     ▌▌▌▌▐ ▄▌░▄▄▄░▐▄ ▌▐▐▐▐
