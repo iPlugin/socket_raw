@@ -20,12 +20,10 @@ int main(int argc, char* argv[], char *envp[]){
     Server server("logs/logServer.log");
     if (!(server.startServer(argc, argv)))
         return 1;
+    else{
+        // server.msg_recv();
+    }
     
-    // string message = "Hello world!";
-    // server.send_pkg(message);
-    // // clinet.recv_pkg();
-
-
 
     cout << "The end" << endl;
     return 0;

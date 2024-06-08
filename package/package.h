@@ -2,24 +2,44 @@
 #define PACKAGE_H
 
 #include <variant>
+#include <netinet/ip.h>
+#include <netinet/tcp.h>
 
 #pragma pack(push, 1)
 
+// Headers
+struct IPHeader{
+    struct iphdr iph;
+};
+
+struct TCPHeader{
+    struct tcphdr tcph;
+};
+
+// Type messages
 struct ServerIntro{
+    IPHeader ip_header;
+    TCPHeader tcp_header;
     char intro[2048];
-} server_intro;
+};
 
 struct SearchFile{
+    IPHeader ip_header;
+    TCPHeader tcp_header;
     char filename[50];
-} search_file;
+};
 
 struct PleaseWait{
+    IPHeader ip_header;
+    TCPHeader tcp_header;
     char plswait[30];
-} please_wait;
+};
 
 struct ResultPath{
+    IPHeader ip_header;
+    TCPHeader tcp_header;
     char result[50];
-} result_path;
+};
 
 using Package = std::variant<ServerIntro, SearchFile, PleaseWait, ResultPath>;
 

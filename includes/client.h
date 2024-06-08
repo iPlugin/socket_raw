@@ -25,6 +25,7 @@ public:
     ~Client(){}
 
     bool startClient(int argc, char *argv[]);
+    void msg_send(const string &message);
 
 };
 

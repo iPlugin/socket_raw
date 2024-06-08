@@ -17,7 +17,6 @@ private:
     bool parseArgs(int argc, char *argv[]);
     bool createSocket();
     bool serverBind();
-    void msg_recv();
     
     void printAndLogs(string &msg_type, string &message, bool status);
 
@@ -27,6 +26,7 @@ public:
     ~Server(){}
 
     bool startServer(int argc, char *argv[]);
+    void msg_recv();
 
 };
 

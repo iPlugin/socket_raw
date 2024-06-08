@@ -35,4 +35,4 @@ utils: tools/utils.cpp
 clean:
 	rm -f runClient runServer
 	if [ -d $(DIROBJS) ]; then rm -r $(DIROBJS); fi
-	if [ -d $(DIRLOGS) ]; then rm -r $(DIRLOGS); fi
+# if [ -d $(DIRLOGS) ]; then rm -r $(DIRLOGS); fi

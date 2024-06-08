@@ -1,7 +1,9 @@
 #ifndef UTILS_H
 #define UTILS_H
 
-#include <netinet/in.h> // + inside <sys/socket.h>
+#include <sys/socket.h>
+#include <netinet/ip.h> // for struct iphdr
+#include <netinet/tcp.h>
 #include <arpa/inet.h>
 #include <iostream>
 #include <cstring>
@@ -12,7 +14,7 @@
 
 #include "../includes/colors.h"
 #include "../includes/logger.h"
-// #include "../includes/packages.h"
+// #include "../package/package.h"
 
 using namespace std;
 

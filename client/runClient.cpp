@@ -20,12 +20,10 @@ int main(int argc, char* argv[], char *envp[]){
     Client client("logs/logClient.log");
     if (!(client.startClient(argc, argv)))
         return 1;
+    else{
+        // client.msg_send("Hello world");
+    }
     
-    // string message = "Hello world!";
-    // client.send_pkg(message);
-    // // clinet.recv_pkg();
-
-
 
     cout << "The end" << endl;
     return 0;

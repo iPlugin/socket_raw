@@ -1,77 +1,12 @@
-2024-06-04 20:34:51 [ INFO ] 	[ CLIENT ]	Starting ...
-2024-06-04 20:34:51 [ INFO ] 	[ PARAMS ]	Client received arguments
-2024-06-04 20:34:51 [ INFO ] 	[ SOCKET ]	Socket was created
-2024-06-04 20:34:51 [ INFO ] 	[ CONNECT ]	Connect was not created
-
-2024-06-04 20:35:26 [ INFO ] 	[ CLIENT ]	Starting ...
-2024-06-04 20:35:26 [ INFO ] 	[ PARAMS ]	Client received arguments
-2024-06-04 20:35:26 [ INFO ] 	[ SOCKET ]	Socket was created
-2024-06-04 20:35:26 [ INFO ] 	[ CONNECT ]	Connection was successfully
-2024-06-05 13:16:45 [ INFO ] 	[ CLIENT ]	Starting ...
-2024-06-05 13:16:45 [ INFO ] 	[ PARAMS ]	Client received arguments
-2024-06-05 13:16:45 [ INFO ] 	[ SOCKET ]	Socket was created
-2024-06-05 13:16:45 [ INFO ] 	[ CONNECT ]	Connect was not created
-
-2024-06-05 13:36:44 [ INFO ] 	[ CLIENT ]	Starting ...
-2024-06-05 13:36:44 [ INFO ] 	[ PARAMS ]	Client received arguments
-2024-06-05 13:36:44 [ INFO ] 	[ SOCKET ]	Socket was created
-2024-06-05 13:36:44 [ INFO ] 	[ CONNECT ]	Connect was not created
-
-2024-06-05 13:59:23 [ INFO ] 	[ CLIENT ]	Starting ...
-2024-06-05 13:59:23 [ INFO ] 	[ PARAMS ]	Client received arguments
-2024-06-05 13:59:23 [ INFO ] 	[ SOCKET ]	Socket was created
-2024-06-05 13:59:23 [ INFO ] 	[ CONNECT ]	Connect was not created
-
-2024-06-05 14:14:16 [ INFO ] 	[ CLIENT ]	Starting ...
-2024-06-05 14:14:16 [ INFO ] 	[ PARAMS ]	Client received arguments
-2024-06-05 14:14:16 [ INFO ] 	[ SOCKET ]	Socket was created
-2024-06-05 14:14:16 [ INFO ] 	[ CONNECT ]	Connect was not created
-
-2024-06-05 14:18:53 [ INFO ] 	[ CLIENT ]	Starting ...
-2024-06-05 14:18:53 [ INFO ] 	[ PARAMS ]	Client received arguments
-2024-06-05 14:18:53 [ INFO ] 	[ SOCKET ]	Socket was created
-2024-06-05 14:18:53 [ INFO ] 	[ CONNECT ]	Connect was not created
-
-2024-06-05 14:36:50 [ INFO ] 	[ CLIENT ]	Starting ...
-2024-06-05 14:36:50 [ INFO ] 	[ PARAMS ]	Client received arguments
-2024-06-05 14:36:50 [ INFO ] 	[ SOCKET ]	Socket was created
-2024-06-05 14:36:50 [ INFO ] 	[ CONNECT ]	Connect was not created
-
-2024-06-05 15:07:38 [ INFO ] 	[ CLIENT ]	Starting ...
-2024-06-05 15:07:38 [ INFO ] 	[ PARAMS ]	Client received arguments
-2024-06-05 15:07:38 [ INFO ] 	[ SOCKET ]	Socket was created
-2024-06-05 15:07:38 [ INFO ] 	[ CONNECT ]	Connect was not created
-
-2024-06-05 15:08:06 [ INFO ] 	[ CLIENT ]	Starting ...
-2024-06-05 15:08:06 [ INFO ] 	[ PARAMS ]	Client received arguments
-2024-06-05 15:08:06 [ INFO ] 	[ SOCKET ]	Socket was created
-2024-06-05 15:08:06 [ INFO ] 	[ CONNECT ]	Connect was not created
-
-2024-06-05 15:08:21 [ INFO ] 	[ CLIENT ]	Starting ...
-2024-06-05 15:08:21 [ INFO ] 	[ PARAMS ]	Client received arguments
-2024-06-05 15:08:21 [ INFO ] 	[ SOCKET ]	Socket was created
-2024-06-05 15:08:21 [ INFO ] 	[ CONNECT ]	Connect was not created
-
-2024-06-05 15:11:52 [ INFO ] 	[ CLIENT ]	Starting ...
-2024-06-05 15:11:52 [ INFO ] 	[ PARAMS ]	Client received arguments
-2024-06-05 15:11:52 [ INFO ] 	[ SOCKET ]	Socket was created
-2024-06-05 15:11:52 [ INFO ] 	[ CONNECT ]	Connection was successfully
-2024-06-05 18:05:55 [ INFO ] 	[ CLIENT ]	Starting ...
-2024-06-05 18:05:55 [ INFO ] 	[ PARAMS ]	Client received arguments
-2024-06-05 18:05:55 [ INFO ] 	[ PARAMS ]	Socket was created
-2024-06-05 18:05:55 [ INFO ] 	[ PARAMS ]	Connect was not created
-
-2024-06-05 18:07:40 [ INFO ] 	[ CLIENT ]	Starting ...
-2024-06-05 18:07:40 [ INFO ] 	[ PARAMS ]	Client received arguments
-2024-06-05 18:07:40 [ INFO ] 	[ SOCKET ]	Socket was created
-2024-06-05 18:07:40 [ INFO ] 	[ CONNECT ]	Connect was not created
-
-2024-06-05 18:44:13 [ INFO ] 	[ CLIENT ]	Starting ...
-2024-06-05 18:44:13 [ INFO ] 	[ PARAMS ]	Client received arguments
-2024-06-05 18:44:13 [ INFO ] 	[ SOCKET ]	Socket was created
-2024-06-05 18:44:13 [ INFO ] 	[ CONNECT ]	Connect was not created
-
-2024-06-05 18:44:30 [ INFO ] 	[ CLIENT ]	Starting ...
-2024-06-05 18:44:30 [ INFO ] 	[ PARAMS ]	Client received arguments
-2024-06-05 18:44:30 [ INFO ] 	[ SOCKET ]	Socket was created
-2024-06-05 18:44:30 [ INFO ] 	[ CONNECT ]	Connection was successfully
+2024-06-08 14:04:01 [ INFO ] 	[ CLIENT ]	Starting ...
+2024-06-08 14:04:01 [ INFO ] 	[ PARAMS ]	Client received arguments
+2024-06-08 14:04:01 [ INFO ] 	[ SOCKET ]	Socket was created
+2024-06-08 14:04:01 [ INFO ] 	[ CONNECT ]	Connection was successfully
+2024-06-08 14:05:02 [ INFO ] 	[ CLIENT ]	Starting ...
+2024-06-08 14:05:02 [ INFO ] 	[ PARAMS ]	Client received arguments
+2024-06-08 14:05:02 [ INFO ] 	[ SOCKET ]	Socket was created
+2024-06-08 14:05:02 [ INFO ] 	[ CONNECT ]	Connection was successfully
+2024-06-08 14:05:08 [ INFO ] 	[ CLIENT ]	Starting ...
+2024-06-08 14:05:08 [ INFO ] 	[ PARAMS ]	Client received arguments
+2024-06-08 14:05:08 [ INFO ] 	[ SOCKET ]	Socket was created
+2024-06-08 14:05:08 [ INFO ] 	[ CONNECT ]	Connection was successfully
