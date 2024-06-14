@@ -1,48 +1,24 @@
 #ifndef PACKAGE_H
 #define PACKAGE_H
 
-#include <variant>
+#include <sys/socket.h>
 #include <netinet/ip.h>
 #include <netinet/tcp.h>
+#include <arpa/inet.h>
+#include <string>
+#include <cstring>
+#include <iostream>
 
-#pragma pack(push, 1)
-
-// Headers
-struct IPHeader{
-    struct iphdr iph;
+// packet = IP + TCP + DATA
+struct package {
+    iphdr iph;           // IP заголовок
+    tcphdr tcph;         // TCP заголовок
+    std::string data;    // Дані для передачі
 };
 
-struct TCPHeader{
-    struct tcphdr tcph;
-};
+// Оголошення функцій для серіалізації та десеріалізації структури package
+void serialize_package(const package& pkt, char* buffer, size_t buffer_size);
+void deserialize_package(const char* buffer, size_t buffer_size, package& pkt);
 
-// Type messages
-struct ServerIntro{
-    IPHeader ip_header;
-    TCPHeader tcp_header;
-    char intro[2048];
-};
-
-struct SearchFile{
-    IPHeader ip_header;
-    TCPHeader tcp_header;
-    char filename[50];
-};
-
-struct PleaseWait{
-    IPHeader ip_header;
-    TCPHeader tcp_header;
-    char plswait[30];
-};
-
-struct ResultPath{
-    IPHeader ip_header;
-    TCPHeader tcp_header;
-    char result[50];
-};
-
-using Package = std::variant<ServerIntro, SearchFile, PleaseWait, ResultPath>;
-
-#pragma pack(pop)
 
 #endif // PACKAGE_H

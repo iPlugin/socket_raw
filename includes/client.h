@@ -6,30 +6,52 @@
 
 class Client{
 private:
-    int clientFD;
+    // constructor
     Logger logger;
-    struct sockaddr_in address;
 
-    string server_ip;
-    int server_port;
+    // startClient -> parseArgs
+    string client_ip;
+    int client_port;
+    int proxy_port;
+    string filename;
 
-    bool parseArgs(int argc, char *argv[]);
+    // startClient -> createSocket
+    int clientFD;
+
+    // sendPacket
+    struct sockaddr_in sender_addr;
+
+// ----------------------------------------------------
+
+    // package senderPacket;
+    // sockaddr_in sendAddr;
+
+
+
+
+ 
+    // startClient
+    bool parseArgs(char *argv[]);
     bool createSocket();
-    bool connectServer();
 
-    void printAndLogs(string &msg_type, string &message, bool status);
+
+    // // technical function
+    // void printAndLogs(string &msg_type, string &message, bool status);
+    // void waitSecond();
 
 public:
 
     Client(const string &logFilePath): logger(logFilePath){}
     ~Client(){}
 
-    bool startClient(int argc, char *argv[]);
-    void msg_send(const string &message);
+    bool startClient(char *argv[]);
+// ----------------------------------------------------
+    bool sendPacket();
+    bool recv_packet();
 
 };
 
 #endif // CLIENT_H           ▐███████▌
-//                           ▐░░░░░░░▌
-//                     ▄▀▀▀█ ▐░▀▀▄▀▀░▌ █▀▀▀▄
-//                     ▌▌▌▌▐ ▄▌░▄▄▄░▐▄ ▌▐▐▐▐
+//                           ▐       ▌
+//                     ▄▀▀▀█ ▐ ▀▀▄▀▀ ▌ █▀▀▀▄
+//                     ▌▌▌▌▐ ▄▌ ▄▄▄ ▐▄ ▌▐▐▐▐

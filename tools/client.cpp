@@ -1,58 +1,68 @@
 #include "../includes/client.h"
 
 /*                         ▄   ▄
-----------------       ▄█▄ █▀█▀█ ▄█▄
----- Part 1 ----      ▀▀████▄█▄████▀▀
-----------------           ▀█▀█▀
+----------------       ▄█▄ █▀█▀█ ▄█▄         I am            ----------------
+---- Part 1 ----      ▀▀████▄█▄████▀▀       Batman           ---- Part 1 ----
+----------------           ▀█▀█▀                             ----------------
 */
 
-bool Client::startClient(int argc, char* argv[]){
+bool Client::startClient(char* argv[]){
     string msg_type_clt = "[ CLIENT ]\t";
     string msg_type_arg = "[ PARAMS ]\t";
     string msg_type_sok = "[ SOCKET ]\t";
-    string msg_type_con = "[ CONNECT ]\t";
 
     string start_client = "Starting ...\n";
-    printAndLogs(msg_type_clt, start_client, true);
+    printAndLogs(logger, msg_type_clt, start_client, true);
 
-    if (parseArgs(argc, argv)){
+    sleepTime(1);
+
+    if (parseArgs(argv)){
         string message = "Client received arguments\n";
-        printAndLogs(msg_type_arg, message, true);
+        printAndLogs(logger, msg_type_arg, message, true);
     }
     else{
         string message = "Client received no arguments\n\n";
-        printAndLogs(msg_type_arg, message, false);
+        printAndLogs(logger, msg_type_arg, message, false);
         return false;
     }
 
-    if (createSocket()){
+    sleepTime(1);
+
+    if (createSocket()) {
         string message = "Socket was created\n";
-        printAndLogs(msg_type_sok, message, true);
+        printAndLogs(logger, msg_type_sok, message, true);
     }
-    else{
+    else {
         string message = "Socket was not created\n\n";
-        printAndLogs(msg_type_sok, message, false);
+        printAndLogs(logger, msg_type_sok, message, false);
         return false;
     }
 
-    if (connectServer()){
-        string message = "Connection was successfully\n";
-        printAndLogs(msg_type_con, message, true);
-    }
-    else{
-        string message = "Connect was not created\n\n";
-        printAndLogs(msg_type_con, message, false);
-        return false;
-    }
+    sleepTime(1);
     return true;
 }
 
-bool Client::parseArgs(int argc, char* argv[]){
-    string temp = argv[2];
+bool Client::parseArgs(char* argv[]){
+    client_ip = "127.0.0.1"; // Client::client_ip
 
-    server_ip = argv[1];
-    auto [ptr, ec] = std::from_chars(temp.data(), temp.data() + temp.size(), server_port);
-    return ec == std::errc();
+    string temp_port = argv[1]; // Client::client_port
+    auto [ptr1, ec1] = std::from_chars(temp_port.data(),
+        temp_port.data() + temp_port.size(), client_port);
+    if (ec1 != std::errc()) {
+        logger.log("Error convert client_port", Logger::ERROR);
+        return false; 
+    }
+
+    temp_port = argv[2]; // Client::proxy_port
+    auto [ptr2, ec2] = std::from_chars(temp_port.data(),
+        temp_port.data() + temp_port.size(), proxy_port);
+    if (ec2 != std::errc()) {
+        logger.log("Error convert proxy_port", Logger::ERROR);
+        return false;
+    }
+
+    filename = argv[3]; // Client::filename
+    return true;
 }
 
 bool Client::createSocket(){
@@ -60,74 +70,108 @@ bool Client::createSocket(){
     return clientFD;
 }
 
-bool Client::connectServer(){
-    int result = createAddr(clientFD, server_ip, server_port, address);
-    if (result == 0)
-        return true;
-    close(clientFD);
-    return false;
-}
-
 /*                         ▄█▄▄▄█▄
-----------------    ▄▀    ▄▌─▄─▄─▐▄    ▀▄   Devil will break
----- Part 2 ----    █▄▄█  ▀▌─▀─▀─▐▀  █▄▄█       his head
-----------------     ▐▌    ▀▀███▀▀    ▐▌
+----------------    ▄▀    ▄▌─▄─▄─▐▄    ▀▄   Devil will break ----------------
+---- Part 2 ----    █▄▄█  ▀▌─▀─▀─▐▀  █▄▄█       his head     ---- Part 2 ----
+----------------     ▐▌    ▀▀███▀▀    ▐▌                     ----------------
                     ████ ▄█████████▄ ████
 */
 
-// void Client::msg_send(const string &message) {
-//     // Підготовка IP і TCP заголовків
-//     IPHeader ip_header{};
-//     TCPHeader tcp_header{};
-
-//     // Налаштування IP заголовку
-//     ip_header.iph.version = 4;
-//     ip_header.iph.ihl = 5;
-//     ip_header.iph.tos = 0;
-//     ip_header.iph.tot_len = htons(sizeof(IPHeader) + sizeof(TCPHeader) + message.size());
-//     ip_header.iph.id = htons(54321);
-//     ip_header.iph.frag_off = 0;
-//     ip_header.iph.ttl = 255;
-//     ip_header.iph.protocol = IPPROTO_TCP;
-//     ip_header.iph.saddr = inet_addr("127.0.0.1"); // Встановлюєте адресу відправника (може бути змінена)
-//     ip_header.iph.daddr = inet_addr(server_ip.c_str());
-
-//     // Налаштування TCP заголовку
-//     tcp_header.tcph.source = htons(server_port);
-//     tcp_header.tcph.dest = htons(server_port);
-//     tcp_header.tcph.seq = 0;
-//     tcp_header.tcph.ack_seq = 0;
-//     tcp_header.tcph.doff = 5;
-//     tcp_header.tcph.fin = 0;
-//     tcp_header.tcph.syn = 1; // Пізда якась звязана з підключенням
-//     tcp_header.tcph.rst = 0;
-//     tcp_header.tcph.psh = 0;
-//     tcp_header.tcph.ack = 0;
-//     tcp_header.tcph.urg = 0;
-//     tcp_header.tcph.window = htons(5840); /* maximum allowed window size */
-//     tcp_header.tcph.check = 0; // Потрібно обчислити пізніше
-//     tcp_header.tcph.urg_ptr = 0;
-
-//     // Підготовка повідомлення
-//     SearchFile search_file{};
-//     search_file.ip_header = ip_header;
-//     search_file.tcp_header = tcp_header;
-//     strncpy(search_file.filename, message.c_str(), sizeof(search_file.filename) - 1);
+bool Client::sendPacket() {
+    package packet; // IP + TCP + DATA
     
-//     // Відправка повідомлення через сокет
-//     size_t packet_size = sizeof(search_file);
-//     ssize_t sent_bytes = send(clientFD, &search_file, packet_size, 0);
+    // Data
+    packet.data = filename;
 
-//     // Перевірка на успішну відправку
-//     if (sent_bytes == -1) {
-//         cerr << "Error sending message: " << strerror(errno) << endl;
-//         logger.log("[ERROR]\tError sending message\n", Logger::ERROR);
-//     } else {
-//         cerr << "Message sent successfully\n";
-//         logger.log("[INFO]\tMessage sent successfully\n", Logger::INFO);
-//     }
-// }
+    // IP і TCP заголовки
+    packet.iph.ihl = 5; 
+    packet.iph.version = 4; 
+    packet.iph.tos = 0; 
+    packet.iph.tot_len = htons(sizeof(struct iphdr) + sizeof(struct tcphdr) + packet.data.size()); 
+    packet.iph.id = htons(rand() % 65535); 
+    packet.iph.frag_off = 0; 
+    packet.iph.ttl = 64;
+    packet.iph.protocol = IPPROTO_TCP; 
+    packet.iph.check = 0; // ---------------------------------------------+
+    packet.iph.saddr = inet_addr(client_ip.c_str());                   // |
+    packet.iph.daddr = inet_addr(client_ip.c_str());                   // |
+                                                                       // |
+    packet.tcph.th_sport = htons(client_port);                         // |
+    packet.tcph.th_dport = htons(proxy_port);                          // |
+    packet.tcph.seq = 0;                                               // |
+    packet.tcph.ack = 0;                                               // |
+    packet.tcph.th_off = 5;                                            // |
+    packet.tcph.res1 = 0;                                              // |
+    packet.tcph.th_flags = TH_SYN;                                     // |
+    packet.tcph.th_win = htons(5840);                                  // |
+    packet.tcph.check = 0; // ----------------------------+               |
+    packet.tcph.urg_ptr = 0; // if th_flags = TH_URG   // |               |
+                                                       // |               |
+    packet.tcph.check = tcp_checksum(&packet); // <-------+               |
+    packet.iph.check = ip_checksum(&packet.iph, sizeof(packet.iph)); // <-+
 
+// ----------------------------------------------------
+    // Print the packet before sending
+    std::cout << "\nSEND" << std::endl;
+    printPacket(packet);
+
+    // Destination address setup
+    sockaddr_in address;
+    address.sin_family = AF_INET;
+    address.sin_port = packet.tcph.th_dport;
+    address.sin_addr.s_addr = packet.iph.daddr;
+
+
+    // Set option to include IP headers
+    int one = 1;
+    const int *val = &one;
+    if (setsockopt(clientFD, IPPROTO_IP, IP_HDRINCL, val, sizeof(one)) < 0) {
+        std::cerr << "Error setting IP_HDRINCL" << std::endl;
+        close(clientFD);
+        return 1;
+    }
+
+    // Send the packet
+    char buffer[sizeof(package)];
+    serialize_package(packet, buffer, sizeof(buffer));
+    if (sendto(clientFD, buffer, ntohs(packet.iph.tot_len), 0, (sockaddr*)&address, sizeof(address)) < 0) {
+        std::cerr << "Sendto failed" << std::endl;
+    } else {
+        std::cout << "Packet sent successfully" << std::endl;
+    }
+
+    return true;
+}
+
+bool Client::recv_packet() {
+    while (true) {
+        char buffer[4096]; // Буфер для "сырих" даних
+        socklen_t addr_len = sizeof(sockaddr_in);
+        sockaddr_in client_addr;
+
+        // Приймаємо дані
+        ssize_t packet_size = recvfrom(clientFD, buffer, sizeof(buffer), 0, (struct sockaddr*)&client_addr, &addr_len);
+        if (packet_size < 0) {
+            std::cerr << "Recvfrom error" << std::endl;
+            continue;
+        }
+
+        if (static_cast<size_t>(packet_size) < sizeof(iphdr) + sizeof(tcphdr)) {
+            std::cerr << "Incomplete packet received" << std::endl;
+            continue;
+        }
+
+        // Розпаковуємо дані у структуру package за допомогою функції deserialize_package
+        package packet;
+        deserialize_package(buffer, packet_size, packet);
+
+        if (packet.iph.daddr == inet_addr("127.0.0.1") && packet.tcph.th_dport == htons(client_port) && packet.data != "") {
+            // Виводимо прийнятий пакет
+            std::cout << "\nRECV" << std::endl;
+            printPacket(packet);
+        }
+    }
+}
 
 
 
@@ -137,14 +181,3 @@ bool Client::connectServer(){
 ---- technical function ----
 ----------------------------
 */
-
-void Client::printAndLogs(string &msg_type, string &message, bool status){
-    if (status){
-        cerr << BOLDGREEN << msg_type << RESET << message;
-        logger.log(msg_type + message, Logger::INFO);
-    }
-    else{
-        cerr << BOLDRED << msg_type << RESET << message;
-        logger.log(msg_type + message, Logger::INFO);
-    }
-}

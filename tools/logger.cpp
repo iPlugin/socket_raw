@@ -2,21 +2,21 @@
 
 
 Logger::Logger(const std::string& filename)
-    : log_file(filename, std::ios::app){
+    : log_file(filename, std::ios::app) {
     if (!log_file.is_open()) {
         std::cerr << "Error opening log file!" << std::endl;
     }
 }
 
 Logger::~Logger() {
-    if (log_file.is_open()){
+    if (log_file.is_open()) {
         log_file.close();
     }
 }
 
-void Logger::log(const std::string& message, LogLevel level){
+void Logger::log(const std::string& message, LogLevel level) {
     std::string level_str;
-    switch (level){
+    switch (level) {
         case INFO:
             level_str = "[ INFO ] ";
             break;
@@ -29,12 +29,12 @@ void Logger::log(const std::string& message, LogLevel level){
     }
 
     std::string log_entry = getCurrentTime() + " " + level_str + "\t" + message;
-    if (log_file.is_open()){
-        log_file << log_entry; // logging in file
+    if (log_file.is_open()) {
+        log_file << log_entry;
     }
 }
 
-std::string Logger::getCurrentTime(){
+std::string Logger::getCurrentTime() {
     std::time_t now = std::time(nullptr);
     char buf[20];
     std::strftime(buf, sizeof(buf), "%Y-%m-%d %H:%M:%S", std::localtime(&now));

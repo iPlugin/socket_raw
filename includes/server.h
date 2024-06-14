@@ -7,30 +7,34 @@
 class Server{
 private:
     int serverFD;
-    int clientFD;
     Logger logger;
     struct sockaddr_in address;
 
-    string server_ip;
-    int server_port;
+    // string server_ip;
+    // int server_port;
 
-    bool parseArgs(int argc, char *argv[]);
+    // string client_ip;
+    int server_port;
+    int proxy_port;
+
+    bool parseArgs(char *argv[]);
     bool createSocket();
-    bool serverBind();
+    // bool serverBind();
     
-    void printAndLogs(string &msg_type, string &message, bool status);
+    // void printAndLogs(string &msg_type, string &message, bool status);
 
 public:
 
     Server(const string &logFilePath): logger(logFilePath){}
     ~Server(){}
 
-    bool startServer(int argc, char *argv[]);
-    void msg_recv();
+    bool startServer(char *argv[]);
+    bool send_packet(const string &message);
+    bool recv_packet();
 
 };
 
 #endif // SERVER_H           ▐███████▌
-//                           ▐░░░░░░░▌
-//                     ▄▀▀▀█ ▐░▀▀▄▀▀░▌ █▀▀▀▄
-//                     ▌▌▌▌▐ ▄▌░▄▄▄░▐▄ ▌▐▐▐▐
+//                           ▐       ▌
+//                     ▄▀▀▀█ ▐ ▀▀▄▀▀ ▌ █▀▀▀▄
+//                     ▌▌▌▌▐ ▄▌ ▄▄▄ ▐▄ ▌▐▐▐▐

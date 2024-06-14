@@ -2,3 +2,7 @@
 2024-06-08 14:04:57 [ INFO ] 	[ PARAMS ]	Server received arguments
 2024-06-08 14:04:57 [ INFO ] 	[ SOCKET ]	Socket was created
 2024-06-08 14:04:57 [ INFO ] 	[ BIND ]	Connection was successfully
+2024-06-12 18:39:31 [ INFO ] 	[ CLIENT ]	Starting ...
+2024-06-12 18:39:31 [ INFO ] 	[ PARAMS ]	Client received arguments
+2024-06-12 18:39:31 [ INFO ] 	[ SOCKET ]	Socket was created
+2024-06-12 18:39:31 [ INFO ] 	[ CONNECT ]	Connection was successfully
