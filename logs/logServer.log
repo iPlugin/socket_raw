@@ -1,8 +1,51 @@
-2024-06-08 14:04:57 [ INFO ] 	[ SERVER ]	Starting ...
-2024-06-08 14:04:57 [ INFO ] 	[ PARAMS ]	Server received arguments
-2024-06-08 14:04:57 [ INFO ] 	[ SOCKET ]	Socket was created
-2024-06-08 14:04:57 [ INFO ] 	[ BIND ]	Connection was successfully
-2024-06-12 18:39:31 [ INFO ] 	[ CLIENT ]	Starting ...
-2024-06-12 18:39:31 [ INFO ] 	[ PARAMS ]	Client received arguments
-2024-06-12 18:39:31 [ INFO ] 	[ SOCKET ]	Socket was created
-2024-06-12 18:39:31 [ INFO ] 	[ CONNECT ]	Connection was successfully
+2024-06-15 14:01:24 [ INFO ] 	[ SERVER ]	Starting ...
+2024-06-15 14:01:25 [ INFO ] 	[ PARAMS ]	Server received arguments
+2024-06-15 14:01:26 [ INFO ] 	[ SOCKET ]	Socket was created
+2024-06-15 14:03:28 [ INFO ] 	[ RECV ]	Packet: FileQ
+2024-06-15 14:06:32 [ INFO ] 	[ SERVER ]	Starting ...
+2024-06-15 14:06:33 [ INFO ] 	[ PARAMS ]	Server received arguments
+2024-06-15 14:06:34 [ INFO ] 	[ SOCKET ]	Socket was created
+2024-06-15 14:06:35 [ INFO ] 	[ HDRINCL ]	Setting IP_HDRINCL successfully
+2024-06-15 14:06:35 [ INFO ] 	[ SEND ]	Packet: Якась тобі відподь
+2024-06-15 14:07:50 [ INFO ] 	[ SERVER ]	Starting ...
+2024-06-15 14:07:51 [ INFO ] 	[ PARAMS ]	Server received arguments
+2024-06-15 14:07:52 [ INFO ] 	[ SOCKET ]	Socket was created
+2024-06-15 14:07:58 [ INFO ] 	[ RECV ]	Packet: FileQ
+2024-06-15 14:07:58 [ INFO ] 	[ HDRINCL ]	Setting IP_HDRINCL successfully
+2024-06-15 14:07:58 [ INFO ] 	[ SEND ]	Packet: Якась тобі відподь
+2024-06-15 14:13:10 [ INFO ] 	[ SERVER ]	Starting ...
+2024-06-15 14:13:11 [ INFO ] 	[ PARAMS ]	Server received arguments
+2024-06-15 14:13:12 [ INFO ] 	[ SOCKET ]	Socket was created
+2024-06-15 14:13:19 [ INFO ] 	[ RECV ]	Packet: FileQ
+2024-06-15 14:13:19 [ INFO ] 	[ HDRINCL ]	Setting IP_HDRINCL successfully
+2024-06-15 14:13:19 [ INFO ] 	[ SEND ]	Packet: Якась тобі відподь
+2024-06-15 14:15:51 [ INFO ] 	[ SERVER ]	Starting ...
+2024-06-15 14:15:52 [ INFO ] 	[ PARAMS ]	Server received arguments
+2024-06-15 14:15:53 [ INFO ] 	[ SOCKET ]	Socket was created
+2024-06-15 14:16:01 [ INFO ] 	[ RECV ]	Packet: FileQ
+2024-06-15 14:16:01 [ INFO ] 	[ HDRINCL ]	Setting IP_HDRINCL successfully
+2024-06-15 14:16:01 [ INFO ] 	[ SEND ]	Packet: Some answer for you
+2024-06-15 14:38:33 [ INFO ] 	[ SERVER ]	Starting ...
+2024-06-15 14:38:34 [ INFO ] 	[ PARAMS ]	Server received arguments
+2024-06-15 14:38:35 [ INFO ] 	[ SOCKET ]	Socket was created
+2024-06-15 14:38:45 [ INFO ] 	[ RECV ]	Packet: FileQ
+2024-06-15 14:38:45 [ INFO ] 	[ HDRINCL ]	Setting IP_HDRINCL successfully
+2024-06-15 14:38:45 [ INFO ] 	[ SEND ]	Packet: Some answer for you
+2024-06-15 14:44:02 [ INFO ] 	[ SERVER ]	Starting ...
+2024-06-15 14:44:03 [ INFO ] 	[ PARAMS ]	Server received arguments
+2024-06-15 14:44:04 [ INFO ] 	[ SOCKET ]	Socket was created
+2024-06-15 14:44:05 [ INFO ] 	[ HDRINCL ]	Setting IP_HDRINCL successfully
+2024-06-15 14:44:12 [ INFO ] 	[ RECV ]	Packet: FileQ
+2024-06-15 14:44:12 [ INFO ] 	[ SEND ]	Packet: Some answer for you
+2024-06-15 15:14:39 [ INFO ] 	[ SERVER ]	Starting ...
+2024-06-15 15:14:40 [ INFO ] 	[ PARAMS ]	Server received arguments
+2024-06-15 15:14:41 [ INFO ] 	[ SOCKET ]	Socket was created
+2024-06-15 15:14:42 [ INFO ] 	[ HDRINCL ]	Setting IP_HDRINCL successfully
+2024-06-15 15:14:52 [ INFO ] 	[ RECV ]	Packet: FileQ
+2024-06-15 15:14:52 [ INFO ] 	[ SEND ]	Packet: Some answer for you
+2024-06-15 15:39:25 [ INFO ] 	[ SERVER ]	Starting ...
+2024-06-15 15:39:26 [ INFO ] 	[ PARAMS ]	Server received arguments
+2024-06-15 15:39:27 [ INFO ] 	[ SOCKET ]	Socket was created
+2024-06-15 15:39:28 [ INFO ] 	[ HDRINCL ]	Setting IP_HDRINCL successfully
+2024-06-15 15:39:36 [ INFO ] 	[ RECV ]	Packet: FileQ
+2024-06-15 15:39:36 [ INFO ] 	[ SEND ]	Packet: Some answer for you

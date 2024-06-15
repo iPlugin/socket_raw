@@ -31,6 +31,7 @@ void Logger::log(const std::string& message, LogLevel level) {
     std::string log_entry = getCurrentTime() + " " + level_str + "\t" + message;
     if (log_file.is_open()) {
         log_file << log_entry;
+        log_file.flush();
     }
 }
 

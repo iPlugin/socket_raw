@@ -1,4 +1,4 @@
-/*                                              creator by iPlugin ©
+/*                                                  creator by iPlugin ©
  █████╗ ██╗     ██╗███████╗███╗  ██╗████████╗     ██████╗██╗██████╗ ███████╗
 ██╔══██╗██║     ██║██╔════╝████╗ ██║╚══██╔══╝    ██╔════╝██║██╔══██╗██╔════╝
 ██║  ╚═╝██║     ██║█████╗  ██╔██╗██║   ██║       ╚█████╗ ██║██║  ██║█████╗
@@ -10,7 +10,7 @@
 #include "../includes/client.h"
 
 
-int main(int argc, char* argv[], char *envp[]){
+int main(int argc, char* argv[], char *envp[]) {
     srand(time(NULL));
     // checking for correctness
     if (!(check_args(argc, argv, envp, 4)))
@@ -21,14 +21,11 @@ int main(int argc, char* argv[], char *envp[]){
     if (!(client.startClient(argv)))
         return 1;
     
-// ----------------------------------------------------
-    if (!(client.send_packet())) // відправляємо filename
+    if (!(client.sendPacket())) // відправляємо filename
         return 1;
     
-    if (!(client.recv_packet()))
+    if (!(client.recvPacket()))
         return 1;
     
-
-    cout << "The end" << endl;
     return 0;
 }

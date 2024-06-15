@@ -17,11 +17,11 @@ bool check_args(int argc, char* argv[], char *envp[], int count) {
         std::string short_name(program_invocation_name);
         std::string correct_form;
         switch (count) {
-        case 4: // for client
-            correct_form = "Correct is: " + short_name + " <portClient> <portProxy> <FileName>\n";
-            break;
         case 3: // for server
             correct_form = "Correct is: " + short_name + " <portServer> <portProxy>\n";
+            break;
+        case 4: // for client
+            correct_form = "Correct is: " + short_name + " <portClient> <portProxy> <FileName>\n";
             break;
         // case 2:
         //     correct_form = "Correct is: " + short_name + " <port>\n";
@@ -50,7 +50,7 @@ void printAndLogs(Logger &logger, string &msg_type, string &message, bool status
     }
     else {
         cerr << BOLDRED << msg_type << RESET << message;
-        logger.log(msg_type + message, Logger::INFO);
+        logger.log(msg_type + message, Logger::ERROR);
     }
 }
 
@@ -63,6 +63,16 @@ int getSocket(){
 }
 
 // ----------------------------------------------------
+void printPacket(const package &packet) {
+    std::cout << "Sending packet:" << std::endl;
+    std::cout << "Package ID: " << packet.iph.id << std::endl;
+    std::cout << "Source IP: " << inet_ntoa(*(in_addr*)&packet.iph.saddr) << std::endl;
+    std::cout << "Destination IP: " << inet_ntoa(*(in_addr*)&packet.iph.daddr) << std::endl;
+    std::cout << "Source Port: " << ntohs(packet.tcph.th_sport) << std::endl;
+    std::cout << "Destination Port: " << ntohs(packet.tcph.th_dport) << std::endl;
+    std::cout << "Data: " << packet.data << std::endl;
+}
+
 
 struct pseudo_header {
     unsigned int src_addr;
@@ -112,12 +122,3 @@ unsigned short tcp_checksum(package* packet) {
 }
 
 
-void print_packet(const package &packet) {
-    std::cout << "Sending packet:" << std::endl;
-    std::cout << "Package ID: " << packet.iph.id << std::endl;
-    std::cout << "Source IP: " << inet_ntoa(*(in_addr*)&packet.iph.saddr) << std::endl;
-    std::cout << "Destination IP: " << inet_ntoa(*(in_addr*)&packet.iph.daddr) << std::endl;
-    std::cout << "Source Port: " << ntohs(packet.tcph.th_sport) << std::endl;
-    std::cout << "Destination Port: " << ntohs(packet.tcph.th_dport) << std::endl;
-    std::cout << "Data: " << packet.data << std::endl;
-}

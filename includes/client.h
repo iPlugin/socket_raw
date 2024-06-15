@@ -20,24 +20,13 @@ private:
 
     // sendPacket
     struct sockaddr_in sender_addr;
-
-// ----------------------------------------------------
-
-    // package senderPacket;
-    // sockaddr_in sendAddr;
-
-
-
-
+    // recvPacket
+    struct sockaddr_in recver_addr;
  
     // startClient
     bool parseArgs(char *argv[]);
     bool createSocket();
-
-
-    // // technical function
-    // void printAndLogs(string &msg_type, string &message, bool status);
-    // void waitSecond();
+    bool createIp();
 
 public:
 
@@ -45,9 +34,8 @@ public:
     ~Client(){}
 
     bool startClient(char *argv[]);
-// ----------------------------------------------------
     bool sendPacket();
-    bool recv_packet();
+    bool recvPacket();
 
 };
 

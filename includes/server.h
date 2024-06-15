@@ -6,22 +6,27 @@
 
 class Server{
 private:
-    int serverFD;
+    // constructor
     Logger logger;
-    struct sockaddr_in address;
 
-    // string server_ip;
-    // int server_port;
-
-    // string client_ip;
+    // startServer -> parseArgs
+    string server_ip;
     int server_port;
     int proxy_port;
 
+    // startServer -> createSocket
+    int serverFD;
+
+    // sendPacket
+    struct sockaddr_in sender_addr;
+    // recvPacket
+    struct sockaddr_in recver_addr;
+    string filename;
+
+    // startServer
     bool parseArgs(char *argv[]);
     bool createSocket();
-    // bool serverBind();
-    
-    // void printAndLogs(string &msg_type, string &message, bool status);
+    bool createIp();
 
 public:
 
@@ -29,8 +34,9 @@ public:
     ~Server(){}
 
     bool startServer(char *argv[]);
-    bool send_packet(const string &message);
-    bool recv_packet();
+// -------------------------------------------------
+    bool sendPacket(const string &message);
+    bool recvPacket();
 
 };
 

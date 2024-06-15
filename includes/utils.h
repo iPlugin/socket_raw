@@ -12,10 +12,12 @@
 #include <unistd.h> // for close()
 #include <ctime>
 
-
 #include "../includes/colors.h"
 #include "../includes/logger.h"
 #include "../package/package.h"
+#include "../linux/settingsOS.h"
+    // #include <sys/socket.h>
+    // #include <netinet/in.h>
 
 using namespace std;
 
@@ -26,13 +28,12 @@ void sleepTime(int sec);
 int getSocket();
 
 // part 2
-void printPacket(const package &packet);
 // ----------------------------------------------------
-
 unsigned short ip_checksum(void *vdata, int length);
 unsigned short tcp_checksum(package *p);
 
-
+void printData(Logger &logger, string &msg_type, string &packet);
+void printPacket(const package &packet);
 
 
 #endif  // UTILS_H

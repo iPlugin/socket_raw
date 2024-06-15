@@ -7,22 +7,22 @@ CREATE_DIROBJS = mkdir -p $(DIROBJS)
 CREATE_DIRLOGS = mkdir -p $(DIRLOGS)
 
 
-all: folders runClient
+all: folders runClient runServer
 
 folders:
 	$(CREATE_DIROBJS)
 	$(CREATE_DIRLOGS)
 
-runClient: client/runClient.cpp logger utils package
+runClient: client/runClient.cpp logger utils package linux
 	$(CC) client/runClient.cpp tools/client.cpp \
 		$(DIROBJS)/logger.o $(DIROBJS)/utils.o \
-			$(DIROBJS)/package.o \
+			$(DIROBJS)/package.o $(DIROBJS)/settingsOS.o \
 			-o runClient -Wall -Werror -pedantic
 
-runServer: server/runServer.cpp logger utils package
+runServer: server/runServer.cpp logger utils package linux
 	$(CC) server/runServer.cpp tools/server.cpp \
 		$(DIROBJS)/logger.o $(DIROBJS)/utils.o \
-			$(DIROBJS)/package.o \
+			$(DIROBJS)/package.o $(DIROBJS)/settingsOS.o \
 			-o runServer -Wall -Werror -pedantic
 
 logger: tools/logger.cpp
@@ -36,6 +36,10 @@ utils: tools/utils.cpp
 package: package/package.cpp
 	$(CC) -c package/package.cpp \
 		-o $(DIROBJS)/package.o
+
+linux: linux/settingsOS.cpp
+	$(CC) -c linux/settingsOS.cpp \
+		-o $(DIROBJS)/settingsOS.o
 
 
 clean:

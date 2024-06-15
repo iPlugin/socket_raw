@@ -10,6 +10,7 @@ bool Client::startClient(char* argv[]){
     string msg_type_clt = "[ CLIENT ]\t";
     string msg_type_arg = "[ PARAMS ]\t";
     string msg_type_sok = "[ SOCKET ]\t";
+    string msg_type_hrl = "[ HDRINCL ]\t";
 
     string start_client = "Starting ...\n";
     printAndLogs(logger, msg_type_clt, start_client, true);
@@ -20,7 +21,7 @@ bool Client::startClient(char* argv[]){
         string message = "Client received arguments\n";
         printAndLogs(logger, msg_type_arg, message, true);
     }
-    else{
+    else {
         string message = "Client received no arguments\n\n";
         printAndLogs(logger, msg_type_arg, message, false);
         return false;
@@ -35,6 +36,19 @@ bool Client::startClient(char* argv[]){
     else {
         string message = "Socket was not created\n\n";
         printAndLogs(logger, msg_type_sok, message, false);
+        return false;
+    }
+
+    sleepTime(1);
+
+    if (createIp()) {
+        string message = "Setting IP_HDRINCL successfully\n";
+        printAndLogs(logger, msg_type_hrl, message, true);
+    }
+    else {
+        string message = "Error setting IP_HDRINCL\n\n";
+        printAndLogs(logger, msg_type_hrl, message, false);
+        close(clientFD);
         return false;
     }
 
@@ -70,6 +84,13 @@ bool Client::createSocket(){
     return clientFD;
 }
 
+bool Client::createIp() {
+    if (settingIp(clientFD)) {
+        return true;
+    }
+    return false;
+}
+
 /*                         ▄█▄▄▄█▄
 ----------------    ▄▀    ▄▌─▄─▄─▐▄    ▀▄   Devil will break ----------------
 ---- Part 2 ----    █▄▄█  ▀▌─▀─▀─▐▀  █▄▄█       his head     ---- Part 2 ----
@@ -78,6 +99,8 @@ bool Client::createSocket(){
 */
 
 bool Client::sendPacket() {
+    string msg_type_snd = "[ SEND ]\t";
+
     package packet; // IP + TCP + DATA
     
     // Data
@@ -110,74 +133,44 @@ bool Client::sendPacket() {
     packet.tcph.check = tcp_checksum(&packet); // <-------+               |
     packet.iph.check = ip_checksum(&packet.iph, sizeof(packet.iph)); // <-+
 
-// ----------------------------------------------------
-    // Print the packet before sending
-    std::cout << "\nSEND" << std::endl;
-    printPacket(packet);
 
-    // Destination address setup
-    sockaddr_in address;
-    address.sin_family = AF_INET;
-    address.sin_port = packet.tcph.th_dport;
-    address.sin_addr.s_addr = packet.iph.daddr;
-
-
-    // Set option to include IP headers
-    int one = 1;
-    const int *val = &one;
-    if (setsockopt(clientFD, IPPROTO_IP, IP_HDRINCL, val, sizeof(one)) < 0) {
-        std::cerr << "Error setting IP_HDRINCL" << std::endl;
-        close(clientFD);
-        return 1;
-    }
+    // Client::sender_addr
+    sender_addr.sin_family = AF_INET;
+    sender_addr.sin_addr.s_addr = packet.iph.daddr;
+    sender_addr.sin_port = packet.tcph.th_dport;
 
     // Send the packet
-    char buffer[sizeof(package)];
+    char buffer[4096];
     serialize_package(packet, buffer, sizeof(buffer));
-    if (sendto(clientFD, buffer, ntohs(packet.iph.tot_len), 0, (sockaddr*)&address, sizeof(address)) < 0) {
-        std::cerr << "Sendto failed" << std::endl;
-    } else {
-        std::cout << "Packet sent successfully" << std::endl;
+    if (sendto(clientFD, buffer, ntohs(packet.iph.tot_len), 0, (sockaddr*)&sender_addr, sizeof(sender_addr)) > 0) {
+        string message = "Packet: " + packet.data + "\n";
+        packet.data = filename + "\n";
+        printAndLogs(logger, msg_type_snd, message, true);
+    }
+    else {
+        string message = "Send failed\n\n";
+        packet.data = filename + "\n";
+        printAndLogs(logger, msg_type_snd, message, false);
     }
 
     return true;
 }
 
-bool Client::recv_packet() {
+bool Client::recvPacket() {
+    string msg_type_rcv = "[ RECV ]\t";
+    
     while (true) {
-        char buffer[4096]; // Буфер для "сырих" даних
-        socklen_t addr_len = sizeof(sockaddr_in);
-        sockaddr_in client_addr;
+        char buffer[4096];
+        socklen_t recver_addr_len = sizeof(sockaddr_in);
+        ssize_t packet_size = recvfrom(clientFD, buffer, sizeof(buffer), 0, (struct sockaddr*)&recver_addr, &recver_addr_len);
 
-        // Приймаємо дані
-        ssize_t packet_size = recvfrom(clientFD, buffer, sizeof(buffer), 0, (struct sockaddr*)&client_addr, &addr_len);
-        if (packet_size < 0) {
-            std::cerr << "Recvfrom error" << std::endl;
-            continue;
-        }
-
-        if (static_cast<size_t>(packet_size) < sizeof(iphdr) + sizeof(tcphdr)) {
-            std::cerr << "Incomplete packet received" << std::endl;
-            continue;
-        }
-
-        // Розпаковуємо дані у структуру package за допомогою функції deserialize_package
+        // Upload packet
         package packet;
         deserialize_package(buffer, packet_size, packet);
 
         if (packet.iph.daddr == inet_addr("127.0.0.1") && packet.tcph.th_dport == htons(client_port) && packet.data != "") {
-            // Виводимо прийнятий пакет
-            std::cout << "\nRECV" << std::endl;
-            printPacket(packet);
+            string message = "Packet: " + packet.data + "\n";
+            printAndLogs(logger, msg_type_rcv, message, true);
         }
     }
 }
-
-
-
-
-/*
-----------------------------
----- technical function ----
-----------------------------
-*/

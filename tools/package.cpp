@@ -1,5 +1,5 @@
 #include "package.h"
-#include <cstring>
+// #include <cstring>
 #include <iostream>
 
 // Реалізація функції для серіалізації структури package в буфер
