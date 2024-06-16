@@ -3,27 +3,35 @@
 CC = g++
 DIROBJS = obj
 DIRLOGS = logs
+DIRTOOLS = tools
 CREATE_DIROBJS = mkdir -p $(DIROBJS)
 CREATE_DIRLOGS = mkdir -p $(DIRLOGS)
 
 
-all: folders runClient runServer
+all: folders runClient runServer runProxy
 
 folders:
 	$(CREATE_DIROBJS)
 	$(CREATE_DIRLOGS)
 
-runClient: client/runClient.cpp logger utils package linux
-	$(CC) client/runClient.cpp tools/client.cpp \
+runClient: client/runClient.cpp logger utils package linux 
+	$(CC) client/runClient.cpp $(DIRTOOLS)/client.cpp \
 		$(DIROBJS)/logger.o $(DIROBJS)/utils.o \
-			$(DIROBJS)/package.o $(DIROBJS)/settingsOS.o \
-			-o runClient -Wall -Werror -pedantic
+		$(DIROBJS)/package.o $(DIROBJS)/settingsOS.o \
+		-o runClient -Wall -Werror -pedantic
 
-runServer: server/runServer.cpp logger utils package linux
-	$(CC) server/runServer.cpp tools/server.cpp \
+runServer: server/runServer.cpp logger utils package linux searcher
+	$(CC) server/runServer.cpp $(DIRTOOLS)/server.cpp \
 		$(DIROBJS)/logger.o $(DIROBJS)/utils.o \
-			$(DIROBJS)/package.o $(DIROBJS)/settingsOS.o \
-			-o runServer -Wall -Werror -pedantic
+		$(DIROBJS)/package.o $(DIROBJS)/settingsOS.o \
+		$(DIROBJS)/searcher.o \
+		-o runServer -Wall -Werror -pedantic
+
+runProxy: middleware/runProxy.cpp logger utils package linux
+	$(CC) middleware/runProxy.cpp $(DIRTOOLS)/proxy.cpp \
+		$(DIROBJS)/logger.o $(DIROBJS)/utils.o \
+		$(DIROBJS)/package.o $(DIROBJS)/settingsOS.o \
+		-o runProxy -Wall -Werror -pedantic
 
 logger: tools/logger.cpp
 	$(CC) -c tools/logger.cpp \
@@ -41,6 +49,9 @@ linux: linux/settingsOS.cpp
 	$(CC) -c linux/settingsOS.cpp \
 		-o $(DIROBJS)/settingsOS.o
 
+searcher: sources/searcher.cpp
+	$(CC) -c sources/searcher.cpp \
+		-o $(DIROBJS)/searcher.o
 
 clean:
 	rm -f runClient runServer

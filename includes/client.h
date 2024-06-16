@@ -4,7 +4,7 @@
 #include "../includes/utils.h"
 
 
-class Client{
+class Client {
 private:
     // constructor
     Logger logger;

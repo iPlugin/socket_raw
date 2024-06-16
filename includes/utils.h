@@ -1,20 +1,21 @@
 #ifndef UTILS_H
 #define UTILS_H
 
-#include <sys/socket.h>
-#include <netinet/ip.h> // for struct iphdr
-#include <netinet/tcp.h>
-#include <arpa/inet.h>
-#include <iostream>
-#include <cstring>
-#include <string>
-#include <charconv> // for from_chars
-#include <unistd.h> // for close()
-#include <ctime>
+#include <arpa/inet.h> // inet_addr()
+#include <charconv> // from_chars()
+#include <unistd.h> // close()
 
 #include "../includes/colors.h"
+    // nothing
 #include "../includes/logger.h"
+    // #include <iostream>
+    // #include <fstream>
+    // #include <string>
+    // #include <ctime>
 #include "../package/package.h"
+    // #include <netinet/ip.h>
+    // #include <netinet/tcp.h>
+    // #include <cstring>
 #include "../linux/settingsOS.h"
     // #include <sys/socket.h>
     // #include <netinet/in.h>

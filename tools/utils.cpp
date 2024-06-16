@@ -23,9 +23,9 @@ bool check_args(int argc, char* argv[], char *envp[], int count) {
         case 4: // for client
             correct_form = "Correct is: " + short_name + " <portClient> <portProxy> <FileName>\n";
             break;
-        // case 2:
-        //     correct_form = "Correct is: " + short_name + " <port>\n";
-        //     break;
+        case 5:
+            correct_form = "Correct is: " + short_name + " proxy <portProxy> <portServer> <portClient>\n";
+            break;
         default:
             break;
         }

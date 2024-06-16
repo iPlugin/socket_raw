@@ -63,7 +63,7 @@ bool Server::parseArgs(char* argv[]) {
     auto [ptr1, ec1] = std::from_chars(temp_port.data(),
         temp_port.data() + temp_port.size(), server_port);
     if (ec1 != std::errc()) {
-        logger.log("Error convert server_port", Logger::ERROR);
+        logger.log("Error convert server_port\n", Logger::WARNING);
         return false; 
     }
 
@@ -71,7 +71,7 @@ bool Server::parseArgs(char* argv[]) {
     auto [ptr2, ec2] = std::from_chars(temp_port.data(),
         temp_port.data() + temp_port.size(), proxy_port);
     if (ec2 != std::errc()) {
-        logger.log("Error convert proxy_port", Logger::ERROR);
+        logger.log("Error convert proxy_port\n", Logger::WARNING);
         return false;
     }
 
@@ -84,9 +84,8 @@ bool Server::createSocket() {
 }
 
 bool Server::createIp() {
-    if (settingIp(serverFD)) {
+    if (settingIp(serverFD))
         return true;
-    }
     return false;
 }
 
@@ -97,13 +96,13 @@ bool Server::createIp() {
 |                   ████ ▄█████████▄ ████
 */
 
-bool Server::sendPacket(const string &answer) {
+bool Server::sendPacket(const string &message) {
     string msg_type_snd = "[ SEND ]\t";
 
     package packet; // IP + TCP + DATA
     
     // Data
-    packet.data = answer;
+    packet.data = message;
 
     // IP і TCP заголовки
     packet.iph.ihl = 5; 
@@ -139,17 +138,17 @@ bool Server::sendPacket(const string &answer) {
     sender_addr.sin_port = packet.tcph.th_dport;
 
     // Send the packet
-    char buffer[4096];
+    char buffer[2048];
     serialize_package(packet, buffer, sizeof(buffer));
     if (sendto(serverFD, buffer, ntohs(packet.iph.tot_len), 0, (sockaddr*)&sender_addr, sizeof(sender_addr)) > 0) {
-        string message = "Packet: " + packet.data + "\n";
-        packet.data = answer + "\n";
-        printAndLogs(logger, msg_type_snd, message, true);
+        string msg = "Packet: " + packet.data + "\n";
+        packet.data = message + "\n";
+        printAndLogs(logger, msg_type_snd, msg, true);
     }
     else {
-        string message = "Send failed\n\n";
-        packet.data = answer + "\n";
-        printAndLogs(logger, msg_type_snd, message, false);
+        string msg = "Send failed\n\n";
+        packet.data = message + "\n";
+        printAndLogs(logger, msg_type_snd, msg, false);
     }
 
     return true;
@@ -159,7 +158,7 @@ bool Server::recvPacket() {
     string msg_type_rcv = "[ RECV ]\t";
 
     while (true) {
-        char buffer[4096];
+        char buffer[2048];
         socklen_t recver_addr_len = sizeof(sockaddr_in);
         ssize_t packet_size = recvfrom(serverFD, buffer, sizeof(buffer), 0, (struct sockaddr*)&recver_addr, &recver_addr_len);
         
@@ -167,7 +166,7 @@ bool Server::recvPacket() {
         package packet;
         deserialize_package(buffer, packet_size, packet);
 
-        if (packet.iph.daddr == inet_addr("127.0.0.1") && packet.tcph.th_dport == htons(server_port) && packet.data != "") {
+        if (packet.iph.daddr == inet_addr(server_ip.c_str()) && packet.tcph.th_dport == htons(server_port) && !packet.data.empty()) {
             string message = "Packet: " + packet.data + "\n";
             printAndLogs(logger, msg_type_rcv, message, true);
             filename = packet.data;
@@ -180,8 +179,33 @@ bool Server::recvPacket() {
 
 /*                 ▄▀▀▀▀▀▄      ▄▄▄▄▄
 ----------------  ▐ ▄   ▄ ▌   ▄█▄█▄█▄█▄   File search        ----------------
----- Part 3 ----  ▐ ▀▀ ▀▀ ▌      ▒░▒         by file name    ---- Part 2 ----
+---- Part 3 ----  ▐ ▀▀ ▀▀ ▌      ▒░▒         by file name    ---- Part 3 ----
 ----------------   ▀▄ ═ ▄▀       ▒░▒                         ----------------
 |                  ▐ ▀▄▀ ▌       ▒░▒     ▁▂▃▄▅▆▇█ 𝙇𝙤𝙖𝙙𝙞𝙣𝙜…
 */
 
+bool Server::startSearch() {
+    std::thread threads_result(&Server::sendResult, this);
+    std::thread status_work(&Server::notification, this);
+
+    // Очікування завершення потоків
+    threads_result.join();
+    status_work.join();
+
+    return true;
+}
+
+void Server::sendResult(){
+    Searcher search("/");
+    filepath = search.search(filename);
+
+    sendPacket(filepath);
+    stopWaiting = true;
+}
+
+void Server::notification(){
+    while (!stopWaiting){
+        sendPacket("Download...");
+        this_thread::sleep_for(std::chrono::milliseconds(500));
+    }
+}

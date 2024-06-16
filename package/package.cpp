@@ -1,9 +1,11 @@
 #include "package.h"
 
+using namespace std;
+
 void serialize_package(const package& pkt, char* buffer, size_t buffer_size) {
     // Перевірка розміру буфера
     if (buffer_size < sizeof(iphdr) + sizeof(tcphdr) + pkt.data.size()) {
-        std::cerr << "Buffer is too small for serialization" << std::endl;
+        // std::cerr << "Buffer is too small for serialization" << std::endl;
         return;
     }
 
@@ -23,7 +25,7 @@ void serialize_package(const package& pkt, char* buffer, size_t buffer_size) {
 void deserialize_package(const char* buffer, size_t buffer_size, package& pkt) {
     // Перевірка розміру буфера
     if (buffer_size < sizeof(iphdr) + sizeof(tcphdr)) {
-        std::cerr << "Buffer is too small for deserialization" << std::endl;
+        // std::cerr << "Buffer is too small for deserialization" << std::endl;
         return;
     }
 

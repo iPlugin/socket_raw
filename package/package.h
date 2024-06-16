@@ -1,13 +1,10 @@
 #ifndef PACKAGE_H
 #define PACKAGE_H
 
-#include <sys/socket.h>
 #include <netinet/ip.h>
 #include <netinet/tcp.h>
-#include <arpa/inet.h>
 #include <string>
 #include <cstring>
-#include <iostream>
 
 // packet = IP + TCP + DATA
 struct package {

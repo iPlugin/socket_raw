@@ -1,7 +1,10 @@
 #ifndef SERVER_H
 #define SERVER_H
 
+#include <thread>
+
 #include "../includes/utils.h"
+#include "../sources/searcher.h"
 
 
 class Server{
@@ -28,15 +31,23 @@ private:
     bool createSocket();
     bool createIp();
 
+    // startSearch
+    string filepath;
+    void sendResult();
+    void notification();
+
 public:
+
+    bool stopWaiting = false;
 
     Server(const string &logFilePath): logger(logFilePath){}
     ~Server(){}
 
     bool startServer(char *argv[]);
-// -------------------------------------------------
+    bool startSearch();
     bool sendPacket(const string &message);
     bool recvPacket();
+// -------------------------------------------------
 
 };
 

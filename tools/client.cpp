@@ -6,7 +6,7 @@
 ----------------           ▀█▀█▀                             ----------------
 */
 
-bool Client::startClient(char* argv[]){
+bool Client::startClient(char* argv[]) {
     string msg_type_clt = "[ CLIENT ]\t";
     string msg_type_arg = "[ PARAMS ]\t";
     string msg_type_sok = "[ SOCKET ]\t";
@@ -56,14 +56,14 @@ bool Client::startClient(char* argv[]){
     return true;
 }
 
-bool Client::parseArgs(char* argv[]){
+bool Client::parseArgs(char* argv[]) {
     client_ip = "127.0.0.1"; // Client::client_ip
 
     string temp_port = argv[1]; // Client::client_port
     auto [ptr1, ec1] = std::from_chars(temp_port.data(),
         temp_port.data() + temp_port.size(), client_port);
     if (ec1 != std::errc()) {
-        logger.log("Error convert client_port", Logger::ERROR);
+        logger.log("Error convert client_port\n", Logger::WARNING);
         return false; 
     }
 
@@ -71,7 +71,7 @@ bool Client::parseArgs(char* argv[]){
     auto [ptr2, ec2] = std::from_chars(temp_port.data(),
         temp_port.data() + temp_port.size(), proxy_port);
     if (ec2 != std::errc()) {
-        logger.log("Error convert proxy_port", Logger::ERROR);
+        logger.log("Error convert proxy_port\n", Logger::WARNING);
         return false;
     }
 
@@ -79,15 +79,14 @@ bool Client::parseArgs(char* argv[]){
     return true;
 }
 
-bool Client::createSocket(){
+bool Client::createSocket() {
     clientFD = getSocket();
     return clientFD;
 }
 
 bool Client::createIp() {
-    if (settingIp(clientFD)) {
+    if (settingIp(clientFD))
         return true;
-    }
     return false;
 }
 
@@ -140,7 +139,7 @@ bool Client::sendPacket() {
     sender_addr.sin_port = packet.tcph.th_dport;
 
     // Send the packet
-    char buffer[4096];
+    char buffer[2048];
     serialize_package(packet, buffer, sizeof(buffer));
     if (sendto(clientFD, buffer, ntohs(packet.iph.tot_len), 0, (sockaddr*)&sender_addr, sizeof(sender_addr)) > 0) {
         string message = "Packet: " + packet.data + "\n";
@@ -168,9 +167,10 @@ bool Client::recvPacket() {
         package packet;
         deserialize_package(buffer, packet_size, packet);
 
-        if (packet.iph.daddr == inet_addr("127.0.0.1") && packet.tcph.th_dport == htons(client_port) && packet.data != "") {
+        if (packet.iph.daddr == inet_addr(client_ip.c_str()) && packet.tcph.th_dport == htons(client_port) && !packet.data.empty()) {
             string message = "Packet: " + packet.data + "\n";
             printAndLogs(logger, msg_type_rcv, message, true);
         }
     }
+    return true;
 }

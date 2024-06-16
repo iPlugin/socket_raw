@@ -20,13 +20,11 @@ int main(int argc, char* argv[], char *envp[]) {
     Server server("logs/logServer.log");
     if (!(server.startServer(argv)))
         return 1;
-// -------------------------------------------------
     
     if (!(server.recvPacket()))
         return 1;
 
-    string answer = "Some answer for you";
-    if (!(server.sendPacket(answer)))
+    if (!(server.startSearch()))
         return 1;
 
     return 0;
