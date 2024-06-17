@@ -54,6 +54,6 @@ searcher: sources/searcher.cpp
 		-o $(DIROBJS)/searcher.o
 
 clean:
-	rm -f runClient runServer
+	rm -f runClient runServer runProxy
 	if [ -d $(DIROBJS) ]; then rm -r $(DIROBJS); fi
 # if [ -d $(DIRLOGS) ]; then rm -r $(DIRLOGS); fi
