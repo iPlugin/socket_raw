@@ -10,22 +10,23 @@ CREATE_DIRLOGS = mkdir -p $(DIRLOGS)
 
 all: folders runClient runServer runProxy
 
+
 folders:
 	$(CREATE_DIROBJS)
 	$(CREATE_DIRLOGS)
 
-runClient: client/runClient.cpp logger utils package linux 
+runClient: client/runClient.cpp logger utils package linux
 	$(CC) client/runClient.cpp $(DIRTOOLS)/client.cpp \
 		$(DIROBJS)/logger.o $(DIROBJS)/utils.o \
 		$(DIROBJS)/package.o $(DIROBJS)/settingsOS.o \
 		-o runClient -Wall -Werror -pedantic
 
-runServer: server/runServer.cpp logger utils package linux searcher
+runServer: server/runServer.cpp logger utils package linux searcher music
 	$(CC) server/runServer.cpp $(DIRTOOLS)/server.cpp \
 		$(DIROBJS)/logger.o $(DIROBJS)/utils.o \
 		$(DIROBJS)/package.o $(DIROBJS)/settingsOS.o \
-		$(DIROBJS)/searcher.o \
-		-o runServer -Wall -Werror -pedantic
+		$(DIROBJS)/searcher.o $(DIROBJS)/audio.o \
+		-o runServer -Wall -Werror -pedantic -lSDL2 -lSDL2_mixer
 
 runProxy: middleware/runProxy.cpp logger utils package linux
 	$(CC) middleware/runProxy.cpp $(DIRTOOLS)/proxy.cpp \
@@ -52,6 +53,11 @@ linux: linux/settingsOS.cpp
 searcher: sources/searcher.cpp
 	$(CC) -c sources/searcher.cpp \
 		-o $(DIROBJS)/searcher.o
+
+music:
+	$(CC) -c audio/audio.cpp \
+		-o $(DIROBJS)/audio.o
+
 
 clean:
 	rm -f runClient runServer runProxy

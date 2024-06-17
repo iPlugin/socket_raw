@@ -1,10 +1,11 @@
 #ifndef SERVER_H
 #define SERVER_H
 
-#include <thread>
+#include <pthread.h>
 
 #include "../includes/utils.h"
 #include "../sources/searcher.h"
+#include "../audio/audio.h"
 
 
 class Server{
@@ -40,6 +41,7 @@ private:
 public:
 
     bool stopWaiting = false;
+    std::atomic<bool> stopMusic;
 
     Server(const string &logFilePath): logger(logFilePath){}
     ~Server(){}

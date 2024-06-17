@@ -195,13 +195,17 @@ bool Server::recvPacket() {
 */
 
 bool Server::startSearch() {
-    std::thread threads_result(&Server::sendResult, this);
-    std::thread status_work(&Server::notification, this);
+    stopMusic = false;
 
-    // Очікування завершення потоків
+    std::thread status_work(&Server::notification, this);
+    std::thread music_play(playMusic, &stopMusic);
+    std::thread threads_result(&Server::sendResult, this);
+    
     threads_result.join();
     status_work.join();
 
+    stopMusic = true;
+    music_play.join();
     return true;
 }
 
