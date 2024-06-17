@@ -13,17 +13,17 @@ bool Client::startClient(char* argv[]) {
     string msg_type_hrl = "[ HDRINCL ]\t";
 
     string start_client = "Starting ...\n";
-    printAndLogs(logger, msg_type_clt, start_client, true);
+    printAndLogs(logger, msg_type_clt, start_client, 1);
 
     sleepTime(1);
 
-    if (parseArgs(argv)){
+    if (parseArgs(msg_type_arg, argv)){
         string message = "Client received arguments\n";
-        printAndLogs(logger, msg_type_arg, message, true);
+        printAndLogs(logger, msg_type_arg, message, 1);
     }
     else {
         string message = "Client received no arguments\n\n";
-        printAndLogs(logger, msg_type_arg, message, false);
+        printAndLogs(logger, msg_type_arg, message, 3);
         return false;
     }
 
@@ -31,11 +31,11 @@ bool Client::startClient(char* argv[]) {
 
     if (createSocket()) {
         string message = "Socket was created\n";
-        printAndLogs(logger, msg_type_sok, message, true);
+        printAndLogs(logger, msg_type_sok, message, 1);
     }
     else {
         string message = "Socket was not created\n\n";
-        printAndLogs(logger, msg_type_sok, message, false);
+        printAndLogs(logger, msg_type_sok, message, 3);
         return false;
     }
 
@@ -43,11 +43,11 @@ bool Client::startClient(char* argv[]) {
 
     if (createIp()) {
         string message = "Setting IP_HDRINCL successfully\n";
-        printAndLogs(logger, msg_type_hrl, message, true);
+        printAndLogs(logger, msg_type_hrl, message, 1);
     }
     else {
         string message = "Error setting IP_HDRINCL\n\n";
-        printAndLogs(logger, msg_type_hrl, message, false);
+        printAndLogs(logger, msg_type_hrl, message, 3);
         close(clientFD);
         return false;
     }
@@ -56,14 +56,16 @@ bool Client::startClient(char* argv[]) {
     return true;
 }
 
-bool Client::parseArgs(char* argv[]) {
+bool Client::parseArgs(string &msg_type, char* argv[]) {
     client_ip = "127.0.0.1"; // Client::client_ip
 
     string temp_port = argv[1]; // Client::client_port
     auto [ptr1, ec1] = std::from_chars(temp_port.data(),
         temp_port.data() + temp_port.size(), client_port);
     if (ec1 != std::errc()) {
-        logger.log("Error convert client_port\n", Logger::WARNING);
+        string message = "Error convert client_port\n";
+        printAndLogs(logger, msg_type, message, 2);
+        // logger.log("Error convert client_port\n", Logger::WARNING);
         return false; 
     }
 
@@ -71,7 +73,9 @@ bool Client::parseArgs(char* argv[]) {
     auto [ptr2, ec2] = std::from_chars(temp_port.data(),
         temp_port.data() + temp_port.size(), proxy_port);
     if (ec2 != std::errc()) {
-        logger.log("Error convert proxy_port\n", Logger::WARNING);
+        string message = "Error convert proxy_port\n";
+        printAndLogs(logger, msg_type, message, 2);
+        // logger.log("Error convert proxy_port\n", Logger::WARNING);
         return false;
     }
 
@@ -129,9 +133,8 @@ bool Client::sendPacket() {
     packet.tcph.check = 0; // ----------------------------+               |
     packet.tcph.urg_ptr = 0; // if th_flags = TH_URG   // |               |
                                                        // |               |
-    packet.tcph.check = tcp_checksum(&packet); // <-------+               |
-    packet.iph.check = ip_checksum(&packet.iph, sizeof(packet.iph)); // <-+
-
+    packet.tcph.check = ntohs(tcp_checksum(&packet)); // <+               |
+    packet.iph.check = (ip_checksum(&packet.iph, sizeof(packet.iph))); //<+
 
     // Client::sender_addr
     sender_addr.sin_family = AF_INET;
@@ -144,12 +147,12 @@ bool Client::sendPacket() {
     if (sendto(clientFD, buffer, ntohs(packet.iph.tot_len), 0, (sockaddr*)&sender_addr, sizeof(sender_addr)) > 0) {
         string message = "Packet: " + packet.data + "\n";
         packet.data = filename + "\n";
-        printAndLogs(logger, msg_type_snd, message, true);
+        printAndLogs(logger, msg_type_snd, message, 1);
     }
     else {
         string message = "Send failed\n\n";
         packet.data = filename + "\n";
-        printAndLogs(logger, msg_type_snd, message, false);
+        printAndLogs(logger, msg_type_snd, message, 3);
     }
 
     return true;
@@ -169,7 +172,7 @@ bool Client::recvPacket() {
 
         if (packet.iph.daddr == inet_addr(client_ip.c_str()) && packet.tcph.th_dport == htons(client_port) && !packet.data.empty()) {
             string message = "Packet: " + packet.data + "\n";
-            printAndLogs(logger, msg_type_rcv, message, true);
+            printAndLogs(logger, msg_type_rcv, message, 1);
         }
     }
     return true;

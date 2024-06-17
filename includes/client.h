@@ -24,7 +24,7 @@ private:
     struct sockaddr_in recver_addr;
  
     // startClient
-    bool parseArgs(char *argv[]);
+    bool parseArgs(string &msg_type, char *argv[]);
     bool createSocket();
     bool createIp();
 

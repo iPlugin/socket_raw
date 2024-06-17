@@ -24,8 +24,5 @@ int main(int argc, char* argv[], char *envp[]) {
     if (!(server.recvPacket()))
         return 1;
 
-    if (!(server.startSearch()))
-        return 1;
-
     return 0;
 }

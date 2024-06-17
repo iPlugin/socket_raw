@@ -13,17 +13,17 @@ bool Server::startServer(char* argv[]) {
     string msg_type_hrl = "[ HDRINCL ]\t";
 
     string start_server = "Starting ...\n";
-    printAndLogs(logger, msg_type_clt, start_server, true);
+    printAndLogs(logger, msg_type_clt, start_server, 1);
 
     sleepTime(1);
 
-    if (parseArgs(argv)) {
+    if (parseArgs(msg_type_arg, argv)) {
         string message = "Server received arguments\n";
-        printAndLogs(logger, msg_type_arg, message, true);
+        printAndLogs(logger, msg_type_arg, message, 1);
     }
     else {
         string message = "Server received no arguments\n\n";
-        printAndLogs(logger, msg_type_arg, message, false);
+        printAndLogs(logger, msg_type_arg, message, 3);
         return false;
     }
 
@@ -31,11 +31,11 @@ bool Server::startServer(char* argv[]) {
 
     if (createSocket()) {
         string message = "Socket was created\n";
-        printAndLogs(logger, msg_type_sok, message, true);
+        printAndLogs(logger, msg_type_sok, message, 1);
     }
     else {
         string message = "Socket was not created\n\n";
-        printAndLogs(logger, msg_type_sok, message, false);
+        printAndLogs(logger, msg_type_sok, message, 3);
         return false;
     }
 
@@ -43,11 +43,11 @@ bool Server::startServer(char* argv[]) {
 
     if (createIp()) {
         string message = "Setting IP_HDRINCL successfully\n";
-        printAndLogs(logger, msg_type_hrl, message, true);
+        printAndLogs(logger, msg_type_hrl, message, 1);
     }
     else {
         string message = "Error setting IP_HDRINCL\n\n";
-        printAndLogs(logger, msg_type_hrl, message, false);
+        printAndLogs(logger, msg_type_hrl, message, 3);
         close(serverFD);
         return false;
     }
@@ -56,14 +56,16 @@ bool Server::startServer(char* argv[]) {
     return true;
 }
 
-bool Server::parseArgs(char* argv[]) {
+bool Server::parseArgs(string &msg_type, char* argv[]) {
     server_ip = "127.0.0.1"; // Server::server_ip
 
     string temp_port = argv[1]; // Server::server_port
     auto [ptr1, ec1] = std::from_chars(temp_port.data(),
         temp_port.data() + temp_port.size(), server_port);
     if (ec1 != std::errc()) {
-        logger.log("Error convert server_port\n", Logger::WARNING);
+        string message = "Error convert server_port\n";
+        printAndLogs(logger, msg_type, message, 2);
+        // logger.log("Error convert server_port\n", Logger::WARNING);
         return false; 
     }
 
@@ -71,7 +73,9 @@ bool Server::parseArgs(char* argv[]) {
     auto [ptr2, ec2] = std::from_chars(temp_port.data(),
         temp_port.data() + temp_port.size(), proxy_port);
     if (ec2 != std::errc()) {
-        logger.log("Error convert proxy_port\n", Logger::WARNING);
+        string message = "Error convert proxy_port\n";
+        printAndLogs(logger, msg_type, message, 2);
+        // logger.log("Error convert proxy_port\n", Logger::WARNING);
         return false;
     }
 
@@ -143,12 +147,12 @@ bool Server::sendPacket(const string &message) {
     if (sendto(serverFD, buffer, ntohs(packet.iph.tot_len), 0, (sockaddr*)&sender_addr, sizeof(sender_addr)) > 0) {
         string msg = "Packet: " + packet.data + "\n";
         packet.data = message + "\n";
-        printAndLogs(logger, msg_type_snd, msg, true);
+        printAndLogs(logger, msg_type_snd, msg, 1);
     }
     else {
         string msg = "Send failed\n\n";
         packet.data = message + "\n";
-        printAndLogs(logger, msg_type_snd, msg, false);
+        printAndLogs(logger, msg_type_snd, msg, 3);
     }
 
     return true;
@@ -167,10 +171,16 @@ bool Server::recvPacket() {
         deserialize_package(buffer, packet_size, packet);
 
         if (packet.iph.daddr == inet_addr(server_ip.c_str()) && packet.tcph.th_dport == htons(server_port) && !packet.data.empty()) {
-            string message = "Packet: " + packet.data + "\n";
-            printAndLogs(logger, msg_type_rcv, message, true);
-            filename = packet.data;
-            break;
+            // if (originalityCheck(packet)) {
+                string message = "Packet: " + packet.data + "\n";
+                printAndLogs(logger, msg_type_rcv, message, 1);
+                filename = packet.data;
+                startSearch();
+            // }
+            // else {
+            //     string message = "Packet: " + packet.data + "\n";
+            //     printAndLogs(logger, msg_type_rcv, message, 2);
+            // }
         }
     }
 
@@ -205,7 +215,31 @@ void Server::sendResult(){
 
 void Server::notification(){
     while (!stopWaiting){
-        sendPacket("Download...");
+        sendPacket("Download ...");
         this_thread::sleep_for(std::chrono::milliseconds(500));
     }
+}
+
+bool Server::originalityCheck(package &packet) {
+
+    if (ntohs(packet.iph.check) != ntohs(ip_checksum(&packet.iph, sizeof(&packet.iph)))) {
+        cout << "\npacket.iph.check " << packet.iph.check << endl;
+        cout << "ntohs(packet.iph.check)  " << ntohs(packet.iph.check) << endl;
+
+        cout << "\n(ip_checksum) " << (ip_checksum(&packet.iph, sizeof(&packet.iph))) << endl;
+        cout << "(tcp_checksum(&packet))" << (tcp_checksum(&packet)) << endl;
+        cout << "\nntohs(ip_checksum) " << ntohs(ip_checksum(&packet.iph, sizeof(&packet.iph))) << endl;
+        cout << "ntohs(tcp_checksum(&packet)) " << ntohs(tcp_checksum(&packet)) << endl;
+        cout << "\n\nПомилка під час original_ip_checksum " << endl;
+        return false;
+    }
+
+    if (packet.tcph.check != ntohs(tcp_checksum(&packet))) {
+        cout << "packet.tcph.check " << packet.tcph.check << endl;
+        cout << "tcp_checksum " << tcp_checksum(&packet) << endl;
+        cout << "Помилка під час original_tcp_checksum" << endl;
+        return false;
+    }
+
+    return true;
 }

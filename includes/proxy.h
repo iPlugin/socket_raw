@@ -24,20 +24,21 @@ private:
     struct sockaddr_in recver_addr;
 
     // startProxy
-    bool parseArgs(char *argv[]);
+    bool parseArgs(string &msg_type, char *argv[]);
     bool createSocket();
     bool createIp();
 
 
-    bool send_packet(int sender, int receiver, std::string message);
-    void print_packet(const package &packet);
+    bool sendPacket(package &recv_packet);
+    void printPacketToSend(const package &packet);
+    void printPacketToRecv(const package &packet);
 
 public:
     Proxy(const string &logFilePath): logger(logFilePath){}
     ~Proxy(){}
 
     bool startProxy(char *argv[]);
-    bool recv_packet();
+    bool recvPacket();
 
 };
 

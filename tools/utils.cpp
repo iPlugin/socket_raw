@@ -43,14 +43,20 @@ bool check_args(int argc, char* argv[], char *envp[], int count) {
     return true;
 }
 
-void printAndLogs(Logger &logger, string &msg_type, string &message, bool status) {
-    if (status) {
+void printAndLogs(Logger &logger, string &msg_type, string &message, int status) {
+    switch (status) {
+    case 1:
         cerr << BOLDGREEN << msg_type << RESET << message;
         logger.log(msg_type + message, Logger::INFO);
-    }
-    else {
+        break;
+    case 2:
+        cerr << BOLDYELLOW << msg_type << RESET << message;
+        logger.log(msg_type + message, Logger::WARNING);
+        break;
+    case 3:
         cerr << BOLDRED << msg_type << RESET << message;
         logger.log(msg_type + message, Logger::ERROR);
+        break;
     }
 }
 
@@ -120,5 +126,3 @@ unsigned short tcp_checksum(package* packet) {
 
     return checksum;
 }
-
-

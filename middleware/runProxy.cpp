@@ -21,7 +21,7 @@ int main(int argc, char* argv[], char *envp[]){
     if (!(proxy.startProxy(argv)))
         return 1;
     
-    if (!(proxy.recv_packet()))
+    if (!(proxy.recvPacket()))
         return 1;
 
     return 0;

@@ -25,9 +25,10 @@ private:
     // recvPacket
     struct sockaddr_in recver_addr;
     string filename;
+    bool originalityCheck(package &packet);
 
     // startServer
-    bool parseArgs(char *argv[]);
+    bool parseArgs(string &msg_type, char *argv[]);
     bool createSocket();
     bool createIp();
 
