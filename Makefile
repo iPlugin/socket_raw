@@ -4,60 +4,53 @@ CC = g++
 DIROBJS = obj
 DIRLOGS = logs
 DIRTOOLS = tools
+DIRPACKAGE = package
+DIRLINUX = linux
 CREATE_DIROBJS = mkdir -p $(DIROBJS)
 CREATE_DIRLOGS = mkdir -p $(DIRLOGS)
 
-
 all: folders runClient runServer runProxy
-
 
 folders:
 	$(CREATE_DIROBJS)
 	$(CREATE_DIRLOGS)
 
-runClient: client/runClient.cpp logger utils package linux
+runClient: client/runClient.cpp $(DIROBJS)/logger.o $(DIROBJS)/utils.o $(DIROBJS)/package.o $(DIROBJS)/settingsOS.o
 	$(CC) client/runClient.cpp $(DIRTOOLS)/client.cpp \
 		$(DIROBJS)/logger.o $(DIROBJS)/utils.o \
 		$(DIROBJS)/package.o $(DIROBJS)/settingsOS.o \
 		-o runClient -Wall -Werror -pedantic
 
-runServer: server/runServer.cpp logger utils package linux searcher music
+runServer: server/runServer.cpp $(DIROBJS)/logger.o $(DIROBJS)/utils.o $(DIROBJS)/package.o $(DIROBJS)/settingsOS.o $(DIROBJS)/searcher.o $(DIROBJS)/audio.o
 	$(CC) server/runServer.cpp $(DIRTOOLS)/server.cpp \
 		$(DIROBJS)/logger.o $(DIROBJS)/utils.o \
 		$(DIROBJS)/package.o $(DIROBJS)/settingsOS.o \
 		$(DIROBJS)/searcher.o $(DIROBJS)/audio.o \
 		-o runServer -Wall -Werror -pedantic -lSDL2 -lSDL2_mixer
 
-runProxy: middleware/runProxy.cpp logger utils package linux
+runProxy: middleware/runProxy.cpp $(DIROBJS)/logger.o $(DIROBJS)/utils.o $(DIROBJS)/package.o $(DIROBJS)/settingsOS.o
 	$(CC) middleware/runProxy.cpp $(DIRTOOLS)/proxy.cpp \
 		$(DIROBJS)/logger.o $(DIROBJS)/utils.o \
 		$(DIROBJS)/package.o $(DIROBJS)/settingsOS.o \
 		-o runProxy -Wall -Werror -pedantic
 
-logger: tools/logger.cpp
-	$(CC) -c tools/logger.cpp \
-		-o $(DIROBJS)/logger.o
+$(DIROBJS)/logger.o: tools/logger.cpp
+	$(CC) -c tools/logger.cpp -o $(DIROBJS)/logger.o
 
-utils: tools/utils.cpp
-	$(CC) -c tools/utils.cpp \
-		-o $(DIROBJS)/utils.o
+$(DIROBJS)/utils.o: tools/utils.cpp
+	$(CC) -c tools/utils.cpp -o $(DIROBJS)/utils.o
 
-package: package/package.cpp
-	$(CC) -c package/package.cpp \
-		-o $(DIROBJS)/package.o
+$(DIROBJS)/package.o: package/package.cpp
+	$(CC) -c package/package.cpp -o $(DIROBJS)/package.o
 
-linux: linux/settingsOS.cpp
-	$(CC) -c linux/settingsOS.cpp \
-		-o $(DIROBJS)/settingsOS.o
+$(DIROBJS)/settingsOS.o: linux/settingsOS.cpp
+	$(CC) -c linux/settingsOS.cpp -o $(DIROBJS)/settingsOS.o
 
-searcher: sources/searcher.cpp
-	$(CC) -c sources/searcher.cpp \
-		-o $(DIROBJS)/searcher.o
+$(DIROBJS)/searcher.o: sources/searcher.cpp
+	$(CC) -c sources/searcher.cpp -o $(DIROBJS)/searcher.o
 
-music:
-	$(CC) -c audio/audio.cpp \
-		-o $(DIROBJS)/audio.o
-
+$(DIROBJS)/audio.o: audio/audio.cpp
+	$(CC) -c audio/audio.cpp -o $(DIROBJS)/audio.o
 
 clean:
 	rm -f runClient runServer runProxy

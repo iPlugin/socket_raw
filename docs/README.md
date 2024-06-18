@@ -18,14 +18,21 @@ For Option2: Server must figure out that data has been changed in the middle (ca
 
 [ For start, you need: ]
 
+Tags:
+v1.0.0			: without music 
+v1.0.0_audio	: with music
+
+*For install software for music*
+- $ sudo apt-get install libsdl2-dev libsdl2-mixer-dev
+
 *For compiling software code*
 - $ make
 *For start the server*
-- $ ./runServer 2000 2001
+- $ sudo ./runServer 2000 2001
 *For start the proxy*
-- $ ./runProxy proxy 2001 2000 2002
+- $ sudo ./runProxy proxy 2001 2000 2002
 *For start the client*
-- $ ./runClient 2002 2001 test.txt
+- $ sudo ./runClient 2002 2001 test.txt
 *For delete files created during compilation*
 - $ make clean
 
@@ -33,6 +40,9 @@ For Option2: Server must figure out that data has been changed in the middle (ca
 
 [ Sources of information used: ]
 
-- socket 1 = https://www.youtube.com/watch?v=KEiur5aZnIM&t=448s
-- socket 2 = https://www.youtube.com/watch?v=_lQ-3S4fJ0U&list=PLPyaR5G9aNDvs6TtdpLcVO43_jvxp4emI
-- thread (repeated) = https://www.youtube.com/watch?v=ZqIUDTZRx5s
+- Git tags = https://www.youtube.com/watch?v=WUEL8AHlQlI
+- Raw Socket 1 = https://habr.com/ru/companies/smart_soft/articles/184430/
+- Raw Socket 2 = https://habr.com/ru/articles/183316/
+- Raw Socket 3 = https://sock-raw.org/papers/sock_raw
+- Raw Socket 3 = https://www.youtube.com/watch?v=BkQiZ5rSR8A&t=944s
+- Checksum Calculated = https://www.youtube.com/watch?v=_zMf4KYoKbM&t=79s
