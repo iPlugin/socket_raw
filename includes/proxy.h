@@ -10,7 +10,7 @@ private:
     Logger logger;
 
     // startProxy -> parseArgs
-    string proxy_ip;
+    string proxy_ip; // #include <string>
     int proxy_port;
     int server_port;
     int client_port;

@@ -27,6 +27,7 @@ unsigned short ip_checksum(void* buffer, int length) {
     return static_cast<unsigned short>(~sum);
 }
 
+// Copy paste?
 unsigned short tcp_checksum(package* packet) {
     // Створення псевдо заголовка
     pseudo_header psh;
@@ -39,6 +40,7 @@ unsigned short tcp_checksum(package* packet) {
     // Обчислення розміру псевдо-заголовка + заголовка TCP + даних
     int psize = sizeof(pseudo_header) + sizeof(tcphdr) + packet->data.size();
 
+    // propose improvement here
     char* pseudogram = new char[psize];
     memcpy(pseudogram, &psh, sizeof(pseudo_header));
     memcpy(pseudogram + sizeof(pseudo_header), &packet->tcph, sizeof(tcphdr));
@@ -46,7 +48,7 @@ unsigned short tcp_checksum(package* packet) {
 
     unsigned short checksum = ip_checksum(pseudogram, psize);
 
-    delete[] pseudogram;
+    delete[] pseudogram; // what about vector?
 
     return checksum;
 }
@@ -190,7 +192,10 @@ int main() {
     //     return 1;
     
     if (!recv_packet(socketFD))
-        return 1;
+        return 1; // not closed socket
+
+    // SocketRaw
+    // SocketRAII
 
     // if (!recv_packet(socketFD))
     //     return 1;

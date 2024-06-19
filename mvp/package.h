@@ -11,17 +11,18 @@ struct package{
     iphdr iph;           // IP заголовок
     tcphdr tcph;         // TCP заголовок
     std::string data;    // Дані для передачі
-};
+}; // SSO - small string optimization
 
 struct sockaddr_in;
 
 
 // Функція для серіалізації структури package в буфер
-void serialize_package(const package& pkt, char* buffer, size_t buffer_size) {
+// std::optional<std::vector<char>>
+void serialize_package(const package& pkt, char* buffer, size_t buffer_size) { // Should be part of package struct
     // Перевірка розміру буфера
     if (buffer_size < sizeof(iphdr) + sizeof(tcphdr) + pkt.data.size()) {
         std::cerr << "Buffer is too small for serialization" << std::endl;
-        return;
+        return; // User won't know that buffer is too small, return false at least
     }
 
     // Копіювання IP заголовка в буфер

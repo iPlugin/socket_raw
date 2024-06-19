@@ -5,7 +5,7 @@ using namespace std;
 
 Searcher::Searcher(const fs::path& path){
     if (fs::exists(path) && fs::is_directory(path)){
-        try {
+        try { // what about exceptions?
             for (const auto& dir : fs::directory_iterator(path)){
                 if (access(dir.path().c_str(), R_OK) == 0) { // Not sure i need it
                     dirs.push_back(dir);
@@ -33,10 +33,12 @@ string Searcher::search(const string& filename){
         });
     }
 
+    // auto &
     for (thread& t : threads){
         t.join();
     }
 
+    // const auto &
     for (const string& result : results){
         if (result != "Not Found"){
             return_result = result;

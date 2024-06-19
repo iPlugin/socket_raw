@@ -25,7 +25,7 @@ private:
     struct sockaddr_in sender_addr;
     // recvPacket
     struct sockaddr_in recver_addr;
-    string filename;
+    string filename; // check the possibility to use std::filesystem::path
     bool originalityCheck(package &packet);
 
     // startServer
@@ -40,11 +40,15 @@ private:
 
 public:
 
-    bool stopWaiting = false;
+    bool stopWaiting = false; // create setter for this value
     std::atomic<bool> stopMusic;
 
     Server(const string &logFilePath): logger(logFilePath){}
     ~Server(){}
+
+    // Server shouldn't be copyable
+    // Server(const Server&) = delete;
+    // Server& operator=(const Server&) = delete;
 
     bool startServer(char *argv[]);
     bool startSearch();

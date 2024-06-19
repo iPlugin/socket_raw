@@ -6,6 +6,9 @@
 ----------------           ▀█▀█▀                             ----------------
 */
 
+// Read about htonsm, ntohs
+// little endian - big endian
+
 bool Client::startClient(char* argv[]) {
     string msg_type_clt = "[ CLIENT ]\t";
     string msg_type_arg = "[ PARAMS ]\t";
@@ -89,6 +92,8 @@ bool Client::createSocket() {
 }
 
 bool Client::createIp() {
+    // return settingIp() == 0;
+    // return settingIp()
     if (settingIp(clientFD))
         return true;
     return false;

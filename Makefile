@@ -1,6 +1,9 @@
 # ============= Makefile ============= #
 
-CC = g++
+CC = g++ -std=c++17 -pthread
+# CXX
+# CFLAGS
+# CPPFLAGS
 DIROBJS = obj
 DIRLOGS = logs
 DIRTOOLS = tools
@@ -9,7 +12,8 @@ DIRLINUX = linux
 CREATE_DIROBJS = mkdir -p $(DIROBJS)
 CREATE_DIRLOGS = mkdir -p $(DIRLOGS)
 
-all: folders runClient runServer runProxy
+# $(shell mkdir -p $(DIROBJS) $(DIRLOGS))
+all: folders runClient runServer runProxy # possible racecondition
 
 folders:
 	$(CREATE_DIROBJS)

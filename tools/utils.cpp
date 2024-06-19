@@ -7,6 +7,7 @@ bool check_args(int argc, char* argv[], char *envp[], int count) {
         const char *user_value = nullptr;
 
         // Search username
+        // https://stackoverflow.com/questions/8953424/how-to-get-the-username-in-c-c-in-linux
         for (int i = 0; envp[i] != nullptr; ++i){
             if (strncmp(envp[i], user_prefix, strlen(user_prefix)) == 0) {
                 user_value = envp[i] + strlen(user_prefix);
@@ -32,7 +33,7 @@ bool check_args(int argc, char* argv[], char *envp[], int count) {
 
         // Print error
         if (user_value != nullptr) {
-            std::cerr << "Dear " << BOLDGREEN << user_value << RESET
+            std::cerr << "Dear " << BOLDGREEN << user_value << RESET // That was great
                 << ", you can not do this!\n" << correct_form;
         }
         else {
@@ -42,8 +43,8 @@ bool check_args(int argc, char* argv[], char *envp[], int count) {
     }
     return true;
 }
-
-void printAndLogs(Logger &logger, string &msg_type, string &message, int status) {
+// Don't understand what this function does
+void logMessage(Logger &logger, string &msg_type, string &message, int status) {
     switch (status) {
     case 1:
         cerr << BOLDGREEN << msg_type << RESET << message;
@@ -61,10 +62,10 @@ void printAndLogs(Logger &logger, string &msg_type, string &message, int status)
 }
 
 void sleepTime(int sec) {
-    sleep(sec);
+    sleep(sec); //std::chrono::sleep_for
 }
 
-int getSocket(){
+int getSocket(){ // createSocket
     return socket(AF_INET, SOCK_RAW, IPPROTO_TCP);
 }
 

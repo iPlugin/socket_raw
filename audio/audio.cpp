@@ -19,13 +19,13 @@ bool playMusic(std::atomic<bool>* stopMusic) {
     Mix_PlayMusic(bgm, -1);
 
     auto start_time = std::chrono::steady_clock::now();
-    while (!(*stopMusic)) {
+    while (!(*stopMusic)) { // use condition_variable instead
         std::this_thread::sleep_for(std::chrono::milliseconds(10));
     }
 
     auto end_time = start_time + std::chrono::seconds(20);
     while (std::chrono::steady_clock::now() < end_time) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+        std::this_thread::sleep_for(std::chrono::milliseconds(10)); // you can use sleep_until()
     }
 
     Mix_FadeOutMusic(500);

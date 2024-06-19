@@ -5,7 +5,7 @@
 ---- Part 1 ----      ▀▀████▄█▄████▀▀       Batman           ---- Part 1 ----
 ----------------           ▀█▀█▀                             ----------------
 */
-
+// Similar to Client and Server, move to some general class
 bool Proxy::startProxy(char* argv[]) {
     string msg_type_clt = "[ PROXY ]\t";
     string msg_type_arg = "[ PARAMS ]\t";

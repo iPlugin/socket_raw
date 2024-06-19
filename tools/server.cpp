@@ -7,6 +7,9 @@
 */
 
 bool Server::startServer(char* argv[]) {
+    // LOG_PARAM
+    // LOG_SERVER
+    // LOG_SOCKET
     string msg_type_clt = "[ SERVER ]\t";
     string msg_type_arg = "[ PARAMS ]\t";
     string msg_type_sok = "[ SOCKET ]\t";
@@ -19,7 +22,7 @@ bool Server::startServer(char* argv[]) {
 
     if (parseArgs(msg_type_arg, argv)) {
         string message = "Server received arguments\n";
-        printAndLogs(logger, msg_type_arg, message, 1);
+        printAndLogs(logger, msg_type_arg, message, 1); // LOG_PARAM(WARNING, "Server received arguments");
     }
     else {
         string message = "Server received no arguments\n\n";

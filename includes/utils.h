@@ -5,6 +5,7 @@
 #include <charconv> // from_chars()
 #include <unistd.h> // close()
 
+// include only in the place where you use it
 #include "../includes/colors.h"
     // nothing
 #include "../includes/logger.h"

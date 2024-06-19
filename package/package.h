@@ -16,6 +16,6 @@ struct package {
 // Оголошення функцій для серіалізації та десеріалізації структури package
 void serialize_package(const package& pkt, char* buffer, size_t buffer_size);
 void deserialize_package(const char* buffer, size_t buffer_size, package& pkt);
-
+// move to package class
 
 #endif // PACKAGE_H

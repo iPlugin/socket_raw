@@ -114,7 +114,7 @@ bool send_packet(int socketFD){
     }
 
     // Send the packet
-    char buffer[sizeof(package)];
+    char buffer[sizeof(package)]; // package contains std::string this is wrong size
     serialize_package(packet, buffer, sizeof(buffer));
     if (sendto(socketFD, buffer, ntohs(packet.iph.tot_len), 0, (sockaddr*)&address, sizeof(address)) < 0) {
         std::cerr << "Sendto failed" << std::endl;

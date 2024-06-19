@@ -4,8 +4,8 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_mixer.h>
 
-#include "../includes/utils.h"
-
+#include "../includes/utils.h" // "includes/utils.h" or "utils.h"
+// -I -i -isystem GCC compiler
 
 class Client {
 private:
