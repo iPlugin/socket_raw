@@ -16,7 +16,7 @@ bool Server::startServer(char* argv[]) {
     string msg_type_hrl = "[ HDRINCL ]\t";
 
     string start_server = "Starting ...\n";
-    printAndLogs(logger, msg_type_clt, start_server, 1);
+    printAndLogs(logger, msg_type_clt, start_server, 1); // magic Number
 
     sleepTime(1);
 

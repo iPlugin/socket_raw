@@ -6,6 +6,7 @@
 #include <unistd.h> // close()
 
 // include only in the place where you use it
+// Learn how #include works in preprocessor
 #include "../includes/colors.h"
     // nothing
 #include "../includes/logger.h"
