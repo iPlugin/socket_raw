@@ -65,7 +65,6 @@ bool Proxy::parseArgs(string &msg_type, char* argv[]) {
     if (ec1 != std::errc()) {
         string message = "Error convert proxy_port\n";
         printAndLogs(logger, msg_type, message, 2);
-        // logger.log("Error convert proxy_port\n", Logger::WARNING);
         return false; 
     }
 
@@ -75,7 +74,6 @@ bool Proxy::parseArgs(string &msg_type, char* argv[]) {
     if (ec2 != std::errc()) {
         string message = "Error convert server_port\n";
         printAndLogs(logger, msg_type, message, 2);
-        // logger.log("Error convert server_port\n", Logger::WARNING);
         return false;
     }
 
@@ -85,7 +83,6 @@ bool Proxy::parseArgs(string &msg_type, char* argv[]) {
     if (ec3 != std::errc()) {
         string message = "Error convert client_port\n";
         printAndLogs(logger, msg_type, message, 2);
-        // logger.log("Error convert client_port\n", Logger::WARNING);
         return false;
     }
     return true;
@@ -109,38 +106,39 @@ bool Proxy::createIp() {
                     ████ ▄█████████▄ ████
 */
 
-bool Proxy::sendPacket(package &recv_packet) {
+bool Proxy::sendPacket(package &packet) {
+// Ми отримали в пакет в recvPacket і викликали sendPacket(packet)
     string msg_type_snd = "[ SEND ]\t";
+    string msg_type_dat = "[ DATA ]\t";
 
-    package packet; // IP + TCP + DATA
-    
-    packet.data = recv_packet.data;
+    cout << "ntohs(packet.iph.check)  " << ntohs(packet.iph.check) << endl;
+    cout << "packet.tcph.check " << packet.tcph.check << endl;
 
-    packet.iph.ihl = 5; 
-    packet.iph.version = 4; 
-    packet.iph.tos = 0; 
-    packet.iph.tot_len = htons(sizeof(struct iphdr) + sizeof(struct tcphdr) + recv_packet.data.size()); 
-    packet.iph.id = htons(rand() % 65535); 
-    packet.iph.frag_off = 0;
-    packet.iph.ttl = 64;
-    packet.iph.protocol = IPPROTO_TCP; 
-    packet.iph.check = recv_packet.iph.check;
-    packet.iph.saddr = inet_addr("127.0.0.1"); // inet_addr(proxy_ip.c_str());
-    packet.iph.daddr = inet_addr("127.0.0.1"); // inet_addr(proxy_ip.c_str());
+    cout << "\nip_checksum " << ip_checksum(&packet.iph, sizeof(&packet.iph)) << endl;
+    cout << "ntohs(ip_checksum) " << ntohs(ip_checksum(&packet.iph, sizeof(&packet.iph))) << endl;
+    cout << "htons(ip_checksum) " << htons(ip_checksum(&packet.iph, sizeof(&packet.iph))) << endl;
+    cout << "\ntcp_checksum(&packet)" << tcp_checksum(&packet) << endl;
+    cout << "ntohs(tcp_checksum(&packet)) " << ntohs(tcp_checksum(&packet)) << endl;
+    cout << "htons(tcp_checksum(&packet)) " << htons(tcp_checksum(&packet)) << endl;
 
+    if (packet.tcph.th_sport == htons(client_port)) {
+        string option;
+        do {
+            cout << "Change message? [1] yes / [2] no: ";
+            cin >> option;
+        } while (option != "1" && option != "2");
+
+        if (option == "1") {
+            string message = "Changes made to the message\n";
+            printAndLogs(logger, msg_type_dat, message, 2);
+            packet.data += "cpp";
+        } cout << endl;
+    }
+
+    packet.iph.saddr = inet_addr(proxy_ip.c_str());
     packet.tcph.th_sport = htons(proxy_port);
-    packet.tcph.th_dport = recv_packet.tcph.th_sport == htons(server_port) ? htons(client_port) : htons(server_port);
-    packet.tcph.seq = 0;
-    packet.tcph.ack = 0;
-    packet.tcph.th_off = 5;
-    packet.tcph.res1 = 0;
-    packet.tcph.th_flags = TH_SYN;
-    packet.tcph.th_win = htons(5840);
-    packet.tcph.check = ntohs(recv_packet.tcph.check);
-    packet.tcph.urg_ptr = 0;
-
-    // packet.tcph.check = tcp_checksum(&packet);
-    // packet.iph.check = ip_checksum(&packet.iph, sizeof(packet.iph));
+    packet.iph.daddr = inet_addr(proxy_ip.c_str());
+    packet.tcph.th_dport = htons(server_port);
 
     // Proxy::sender_addr
     sender_addr.sin_family = AF_INET;
@@ -152,13 +150,13 @@ bool Proxy::sendPacket(package &recv_packet) {
     serialize_package(packet, buffer, sizeof(buffer));
     if (sendto(proxyFD, buffer, ntohs(packet.iph.tot_len), 0, (sockaddr*)&sender_addr, sizeof(sender_addr)) > 0) {
         string msg = "Packet: " + packet.data + "\n";
-        packet.data = recv_packet.data + "\n";
+        packet.data = packet.data + "\n";
         printAndLogs(logger, msg_type_snd, msg, 1);
         printPacketToSend(packet);
     }
     else {
         string msg = "Send failed\n\n";
-        packet.data = recv_packet.data + "\n";
+        packet.data = packet.data + "\n";
         printAndLogs(logger, msg_type_snd, msg, 3);
     }
 
@@ -167,7 +165,6 @@ bool Proxy::sendPacket(package &recv_packet) {
 
 bool Proxy::recvPacket() {
     string msg_type_rcv = "[ RECV ]\t";
-    string msg_type_dat = "[ DATA ]\t";
 
     while (true) {
         char buffer[2048];
@@ -183,19 +180,6 @@ bool Proxy::recvPacket() {
             printAndLogs(logger, msg_type_rcv, message, 1);
             printPacketToRecv(packet);
                         
-            // if (packet.tcph.th_sport == htons(client_port)) {
-                // string option;
-                // do {
-                //     cout << "Change message? [1] yes / [2] no: ";
-                //     cin >> option;
-                // } while (option != "1" && option != "2");
-
-                // if (option == "1") {
-                    // string message = "Changes made to the message\n";
-                    // printAndLogs(logger, msg_type_dat, message, 2);
-                    // packet.data += "cpp";
-                // } cout << endl;
-            // }
             sendPacket(packet);
         }
     }
@@ -209,7 +193,7 @@ void Proxy::printPacketToSend(const package &packet) {
     cout << "\tSource Port: " << ntohs(packet.tcph.th_sport) << "\n";
     cout << "\tDestination Port: " << ntohs(packet.tcph.th_dport) << "\n";
     cout << "\tChecksum IP: " << ntohs(packet.iph.check) << "\n";
-    cout << "\tChecksum TCP: " << ntohs(packet.tcph.check) << "\n";
+    cout << "\tChecksum TCP: " << packet.tcph.check << "\n";
     cout << "\tData: " << packet.data << "\n\n";
 }
 
@@ -219,7 +203,7 @@ void Proxy::printPacketToRecv(const package &packet) {
     cout << "\tDestination IP: " << inet_ntoa(*(in_addr*)&packet.iph.daddr) << "\n";
     cout << "\tSource Port: " << ntohs(packet.tcph.th_sport) << "\n";
     cout << "\tDestination Port: " << ntohs(packet.tcph.th_dport) << "\n";
-    cout << "\tChecksum IP: " << packet.iph.check << "\n";
-    cout << "\tChecksum TCP: " << ntohs(packet.tcph.check) << "\n";
+    cout << "\tChecksum IP: " << ntohs(packet.iph.check) << "\n";
+    cout << "\tChecksum TCP: " << packet.tcph.check << "\n";
     cout << "\tData: " << packet.data << "\n\n";
 }

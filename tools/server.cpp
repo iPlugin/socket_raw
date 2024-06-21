@@ -65,7 +65,6 @@ bool Server::parseArgs(string &msg_type, char* argv[]) {
     if (ec1 != std::errc()) {
         string message = "Error convert server_port\n";
         printAndLogs(logger, msg_type, message, 2);
-        // logger.log("Error convert server_port\n", Logger::WARNING);
         return false; 
     }
 
@@ -75,7 +74,6 @@ bool Server::parseArgs(string &msg_type, char* argv[]) {
     if (ec2 != std::errc()) {
         string message = "Error convert proxy_port\n";
         printAndLogs(logger, msg_type, message, 2);
-        // logger.log("Error convert proxy_port\n", Logger::WARNING);
         return false;
     }
 
@@ -132,8 +130,9 @@ bool Server::sendPacket(const string &message) {
     packet.tcph.check = 0; // ----------------------------+               |
     packet.tcph.urg_ptr = 0; // if th_flags = TH_URG   // |               |
                                                        // |               |
-    packet.tcph.check = tcp_checksum(&packet); // <-------+               |
-    packet.iph.check = ip_checksum(&packet.iph, sizeof(packet.iph)); // <-+
+    packet.tcph.check = htons(tcp_checksum(&packet)); // <-------+               |
+    packet.iph.check = htons(ip_checksum(&packet.iph, sizeof(packet.iph))); // <-+
+
 
 
     // Server::sender_addr
@@ -171,16 +170,16 @@ bool Server::recvPacket() {
         deserialize_package(buffer, packet_size, packet);
 
         if (packet.iph.daddr == inet_addr(server_ip.c_str()) && packet.tcph.th_dport == htons(server_port) && !packet.data.empty()) {
-            // if (originalityCheck(packet)) {
+            if (originalityCheck(packet)) {
                 string message = "Packet: " + packet.data + "\n";
                 printAndLogs(logger, msg_type_rcv, message, 1);
                 filename = packet.data;
                 startSearch();
-            // }
-            // else {
-            //     string message = "Packet: " + packet.data + "\n";
-            //     printAndLogs(logger, msg_type_rcv, message, 2);
-            // }
+            }
+            else {
+                string message = "Packet: " + packet.data + "\n";
+                printAndLogs(logger, msg_type_rcv, message, 2);
+            }
         }
     }
 
@@ -226,19 +225,20 @@ void Server::notification(){
 
 bool Server::originalityCheck(package &packet) {
 
-    if (ntohs(packet.iph.check) != ntohs(ip_checksum(&packet.iph, sizeof(&packet.iph)))) {
-        cout << "\npacket.iph.check " << packet.iph.check << endl;
-        cout << "ntohs(packet.iph.check)  " << ntohs(packet.iph.check) << endl;
-
-        cout << "\n(ip_checksum) " << (ip_checksum(&packet.iph, sizeof(&packet.iph))) << endl;
-        cout << "(tcp_checksum(&packet))" << (tcp_checksum(&packet)) << endl;
-        cout << "\nntohs(ip_checksum) " << ntohs(ip_checksum(&packet.iph, sizeof(&packet.iph))) << endl;
+    if (ntohs(packet.iph.check) != htons(ip_checksum(&packet.iph, sizeof(&packet.iph)))) {
+        cout << "\nip_checksum " << ip_checksum(&packet.iph, sizeof(&packet.iph)) << endl;
+        cout << "ntohs(ip_checksum) " << ntohs(ip_checksum(&packet.iph, sizeof(&packet.iph))) << endl;
+        cout << "htons(ip_checksum) " << htons(ip_checksum(&packet.iph, sizeof(&packet.iph))) << endl;
+        cout << "\ntcp_checksum(&packet)" << tcp_checksum(&packet) << endl;
         cout << "ntohs(tcp_checksum(&packet)) " << ntohs(tcp_checksum(&packet)) << endl;
+        cout << "htons(tcp_checksum(&packet)) " << htons(tcp_checksum(&packet)) << endl;
+
+
         cout << "\n\nПомилка під час original_ip_checksum " << endl;
         return false;
     }
 
-    if (packet.tcph.check != ntohs(tcp_checksum(&packet))) {
+    if (ntohs(packet.tcph.check) != htons(tcp_checksum(&packet))) {
         cout << "packet.tcph.check " << packet.tcph.check << endl;
         cout << "tcp_checksum " << tcp_checksum(&packet) << endl;
         cout << "Помилка під час original_tcp_checksum" << endl;

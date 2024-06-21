@@ -65,7 +65,6 @@ bool Client::parseArgs(string &msg_type, char* argv[]) {
     if (ec1 != std::errc()) {
         string message = "Error convert client_port\n";
         printAndLogs(logger, msg_type, message, 2);
-        // logger.log("Error convert client_port\n", Logger::WARNING);
         return false; 
     }
 
@@ -75,7 +74,6 @@ bool Client::parseArgs(string &msg_type, char* argv[]) {
     if (ec2 != std::errc()) {
         string message = "Error convert proxy_port\n";
         printAndLogs(logger, msg_type, message, 2);
-        // logger.log("Error convert proxy_port\n", Logger::WARNING);
         return false;
     }
 
@@ -133,9 +131,15 @@ bool Client::sendPacket() {
     packet.tcph.check = 0; // ----------------------------+               |
     packet.tcph.urg_ptr = 0; // if th_flags = TH_URG   // |               |
                                                        // |               |
-    packet.tcph.check = ntohs(tcp_checksum(&packet)); // <+               |
-    packet.iph.check = (ip_checksum(&packet.iph, sizeof(packet.iph))); //<+
+    packet.tcph.check = htons(tcp_checksum(&packet)); // <+               |
+    packet.iph.check = htons(ip_checksum(&packet.iph, sizeof(packet.iph))); //<+
+    
+    cout << "packet.iph.check " << packet.iph.check << endl; // 56406
+    cout << "packet.tcph.check " << packet.tcph.check << endl;// 11560
+    cout << "\nhtons(ip_checksum) " << htons(ip_checksum(&packet.iph, sizeof(&packet.iph))) << endl; // 6752
+    cout << "htons(tcp_checksum(&packet)) " << htons(tcp_checksum(&packet)) << endl; // 1275
 
+    
     // Client::sender_addr
     sender_addr.sin_family = AF_INET;
     sender_addr.sin_addr.s_addr = packet.iph.daddr;
