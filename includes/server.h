@@ -26,7 +26,7 @@ private:
     // recvPacket
     struct sockaddr_in recver_addr;
     string filename;
-    bool originalityCheck(package &packet);
+    bool originalityCheck(const package &packet);
 
     // startServer
     bool parseArgs(string &msg_type, char *argv[]);

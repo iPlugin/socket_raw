@@ -131,6 +131,12 @@ bool Client::sendPacket() {
     packet.tcph.check = 0; // ----------------------------+               |
     packet.tcph.urg_ptr = 0; // if th_flags = TH_URG   // |               |
                                                        // |               |
+
+    const char * p = reinterpret_cast<const char*>(&packet.iph);
+    for (size_t i = 0; i < sizeof(packet.iph); i++) {
+        std::cout << static_cast<unsigned int>(p[i]) << " ";
+    }
+    std::cout << std::endl;
     packet.tcph.check = htons(tcp_checksum(&packet)); // <+               |
     packet.iph.check = htons(ip_checksum(&packet.iph, sizeof(packet.iph))); //<+
     

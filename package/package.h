@@ -11,6 +11,14 @@ struct package {
     iphdr iph;           // IP заголовок
     tcphdr tcph;         // TCP заголовок
     std::string data;    // Дані для передачі
+
+    package() = default;
+
+    package(const package& other) {
+        memcpy(&this->iph, &other.iph, sizeof(this->iph));
+        memcpy(&this->tcph, &other.tcph, sizeof(this->tcph));
+        this->data = other.data;
+    }
 };
 
 // Оголошення функцій для серіалізації та десеріалізації структури package

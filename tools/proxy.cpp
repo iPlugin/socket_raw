@@ -111,15 +111,8 @@ bool Proxy::sendPacket(package &packet) {
     string msg_type_snd = "[ SEND ]\t";
     string msg_type_dat = "[ DATA ]\t";
 
-    cout << "ntohs(packet.iph.check)  " << ntohs(packet.iph.check) << endl;
+    cout << "packet.iph.check  " << packet.iph.check << endl;
     cout << "packet.tcph.check " << packet.tcph.check << endl;
-
-    cout << "\nip_checksum " << ip_checksum(&packet.iph, sizeof(&packet.iph)) << endl;
-    cout << "ntohs(ip_checksum) " << ntohs(ip_checksum(&packet.iph, sizeof(&packet.iph))) << endl;
-    cout << "htons(ip_checksum) " << htons(ip_checksum(&packet.iph, sizeof(&packet.iph))) << endl;
-    cout << "\ntcp_checksum(&packet)" << tcp_checksum(&packet) << endl;
-    cout << "ntohs(tcp_checksum(&packet)) " << ntohs(tcp_checksum(&packet)) << endl;
-    cout << "htons(tcp_checksum(&packet)) " << htons(tcp_checksum(&packet)) << endl;
 
     if (packet.tcph.th_sport == htons(client_port)) {
         string option;
@@ -132,6 +125,7 @@ bool Proxy::sendPacket(package &packet) {
             string message = "Changes made to the message\n";
             printAndLogs(logger, msg_type_dat, message, 2);
             packet.data += "cpp";
+            // update length inside protocols
         } cout << endl;
     }
 

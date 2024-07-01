@@ -103,7 +103,7 @@ unsigned short ip_checksum(void* buffer, int length) {
     return static_cast<unsigned short>(~sum);
 }
 
-unsigned short tcp_checksum(package* packet) {
+unsigned short tcp_checksum(const package* packet) {
     // Створення псевдо заголовка
     pseudo_header psh;
     psh.src_addr = packet->iph.saddr;

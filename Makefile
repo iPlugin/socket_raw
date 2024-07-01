@@ -1,6 +1,6 @@
 # ============= Makefile ============= #
 
-CC = g++
+CC = g++ -std=c++17 -pthread
 DIROBJS = obj
 DIRLOGS = logs
 DIRTOOLS = tools

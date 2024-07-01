@@ -30,7 +30,7 @@ int getSocket();
 
 // part 2
 unsigned short ip_checksum(void *vdata, int length);
-unsigned short tcp_checksum(package *p);
+unsigned short tcp_checksum(const package *p);
 
 
 #endif  // UTILS_H

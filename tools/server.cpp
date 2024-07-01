@@ -223,24 +223,40 @@ void Server::notification(){
     }
 }
 
-bool Server::originalityCheck(package &packet) {
+bool Server::originalityCheck(const package &packet) {
+    package tmp(packet);
+    tmp.iph.check = 0;
+    tmp.tcph.check = 0;
 
-    if (ntohs(packet.iph.check) != htons(ip_checksum(&packet.iph, sizeof(&packet.iph)))) {
-        cout << "\nip_checksum " << ip_checksum(&packet.iph, sizeof(&packet.iph)) << endl;
-        cout << "ntohs(ip_checksum) " << ntohs(ip_checksum(&packet.iph, sizeof(&packet.iph))) << endl;
-        cout << "htons(ip_checksum) " << htons(ip_checksum(&packet.iph, sizeof(&packet.iph))) << endl;
-        cout << "\ntcp_checksum(&packet)" << tcp_checksum(&packet) << endl;
-        cout << "ntohs(tcp_checksum(&packet)) " << ntohs(tcp_checksum(&packet)) << endl;
-        cout << "htons(tcp_checksum(&packet)) " << htons(tcp_checksum(&packet)) << endl;
+    const char * p = reinterpret_cast<const char*>(&packet.iph);
+    for (size_t i = 0; i < sizeof(packet.iph); i++) {
+        std::cout << static_cast<unsigned int>(p[i]) << " ";
+    }
+    std::cout << std::endl;
+
+
+    p = reinterpret_cast<const char*>(&tmp.iph);
+    for (size_t i = 0; i < sizeof(tmp.iph); i++) {
+        std::cout << static_cast<unsigned int>(p[i]) << " ";
+    }
+    std::cout << std::endl;
+
+    if (packet.iph.check != htons(ip_checksum(&tmp.iph, sizeof(&tmp.iph)))) {
+        // cout << "\nip_checksum " << ip_checksum(&tmp.iph, sizeof(&tmp.iph)) << endl;
+        cout << "htons(ip_checksum) " << htons(ip_checksum(&tmp.iph, sizeof(&tmp.iph))) << endl;
+        cout << "packet.iph.check " << packet.iph.check << endl;
+        cout << "ip_checksum(&tmp.iph, sizeof(&tmp.iph))" << ip_checksum(&tmp.iph, sizeof(&tmp.iph)) << endl;
+        // cout << "\ntcp_checksum(&packet)" << tcp_checksum(&tmp) << endl;
+        // cout << "htons(tcp_checksum(&packet)) " << htons(tcp_checksum(&tmp)) << endl;
 
 
         cout << "\n\nПомилка під час original_ip_checksum " << endl;
         return false;
     }
 
-    if (ntohs(packet.tcph.check) != htons(tcp_checksum(&packet))) {
+    if (ntohs(packet.tcph.check) != htons(tcp_checksum(&tmp))) {
         cout << "packet.tcph.check " << packet.tcph.check << endl;
-        cout << "tcp_checksum " << tcp_checksum(&packet) << endl;
+        cout << "tcp_checksum " << tcp_checksum(&tmp) << endl;
         cout << "Помилка під час original_tcp_checksum" << endl;
         return false;
     }
